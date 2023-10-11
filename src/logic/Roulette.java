@@ -2,10 +2,10 @@ package logic;
 
 public class Roulette {
     private Pocket[] pockets;
-    private int currentPosition;
+    private Pocket currentPocket;
     public Roulette() {
-        currentPosition = 0;
         buildRouletteValues();
+        currentPocket = pockets[0];
     }
 
     private void buildRouletteValues() {
@@ -18,19 +18,16 @@ public class Roulette {
         }
     }
 
-    public int getCurrentPosition() {
-        return currentPosition;
-    }
-
     public Pocket[] getPockets() {
         return pockets;
     }
 
     public void spin() {
-        currentPosition = (int)(Math.random() * pockets.length);
+        int random = (int)(Math.random() * pockets.length);
+        currentPocket = pockets[random];
     }
 
     public Pocket getCurrentPocket() {
-        return pockets[currentPosition];
+        return currentPocket;
     }
 }
