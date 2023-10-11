@@ -1,17 +1,21 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import logic.BettingGrid;
+import logic.BettingGridBox;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        BettingGrid bettingGrid = new BettingGrid();
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
-
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        BettingGridBox[][] grid = bettingGrid.getGrid();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                BettingGridBox box = grid[i][j];
+                if (box != null) {
+                    System.out.print(box.getType() + "\t");
+                } else {
+                    System.out.print("Vacío\t\t\t");
+                }
+            }
+            System.out.println();
         }
     }
 }
