@@ -2,10 +2,10 @@ package logic;
 
 public class Pocket {
     private int position;
-    private String color;
+    private ValueColor color;
     private int value;
 
-    public Pocket(int position, int value, String color) {
+    public Pocket(int position, int value, ValueColor color) {
         this.position = position;
         this.value = value;
         this.color = color;
@@ -19,7 +19,7 @@ public class Pocket {
         return value;
     }
 
-    public String getColor() {
+    public ValueColor getColor() {
         return color;
     }
 }
