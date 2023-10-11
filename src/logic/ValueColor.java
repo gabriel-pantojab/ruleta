@@ -1,5 +1,5 @@
 package logic;
 
 public enum ValueColor {
-    RED, BLACK
+    RED, BLACK, GREEN
 }
