@@ -33,4 +33,12 @@ public class Roulette {
     public Pocket getCurrentPocket() {
         return currentPocket;
     }
+
+    public void setCurrentPocket(Pocket currentPocket) {
+        this.currentPocket = currentPocket;
+    }
+
+    public void setPockets(Pocket[] pockets) {
+        this.pockets = pockets;
+    }
 }

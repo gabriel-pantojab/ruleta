@@ -26,4 +26,16 @@ public class Pocket {
     public ValueColor getColor() {
         return color;
     }
+
+    public void setColor(ValueColor color) {
+        this.color = color;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }
