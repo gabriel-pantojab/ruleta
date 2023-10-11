@@ -1,3 +1,7 @@
+/**
+ * @author Esther Romero Aguilar
+ * */
+
 import logic.BettingGrid;
 import logic.BettingGridBox;
 
@@ -10,7 +14,7 @@ public class Main {
             for (int j = 0; j < grid[i].length; j++) {
                 BettingGridBox box = grid[i][j];
                 if (box != null) {
-                    System.out.print(box.getType() + "\t");
+                    System.out.print(box.getColor() + "\t");
                 } else {
                     System.out.print("Vacío\t\t\t");
                 }

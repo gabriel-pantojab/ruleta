@@ -1,20 +1,43 @@
 package logic;
 
+/**
+ * @author Esther Romero Aguilar
+ * */
+
 public class BettingGridBox {
 
-    private String type;
-    private String color;
+    private int num;
+    private ValueColor color;
+    private int value;
 
-    public BettingGridBox(String type, String color) {
-        this.type = type;
+    public BettingGridBox(int num, ValueColor color, int value) {
+        this.num = num;
+        this.color = color;
+        this.value = value;
+    }
+
+    public void setColor(ValueColor color) {
         this.color = color;
     }
 
-    public String getType() {
-        return type;
+    public ValueColor getColor() {
+
+        return color;
     }
 
-    public String getColor() {
-        return color;
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 }
