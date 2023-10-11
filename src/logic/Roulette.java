@@ -1,5 +1,8 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ */
 public class Roulette {
     private Pocket[] pockets;
     private Pocket currentPocket;

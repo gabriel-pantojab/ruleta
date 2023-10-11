@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ */
+
 public class Pocket {
     private int position;
     private ValueColor color;
