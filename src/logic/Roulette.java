@@ -2,9 +2,10 @@ package logic;
 
 public class Roulette {
     private Pocket[] pockets;
-    private int currentValue;
+    private int currentPosition;
     public Roulette() {
-        currentValue = 0;
+        currentPosition = 0;
+        buildRouletteValues();
     }
 
     private void buildRouletteValues() {
@@ -15,5 +16,21 @@ public class Roulette {
             ValueColor color = i % 2 == 0 ? ValueColor.BLACK : ValueColor.RED;
             pockets[i] = new Pocket(i, values[i], color);
         }
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public Pocket[] getPockets() {
+        return pockets;
+    }
+
+    public void spin() {
+        currentPosition = (int)(Math.random() * pockets.length);
+    }
+
+    public Pocket getCurrentPocket() {
+        return pockets[currentPosition];
     }
 }
