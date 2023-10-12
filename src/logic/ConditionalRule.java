@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
+
 import java.util.function.Function;
 
 public class ConditionalRule implements RuleBet{

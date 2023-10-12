@@ -1,5 +1,8 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
 public class ColorRule implements RuleBet{
 
     private final ValueColor color;

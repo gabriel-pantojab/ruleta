@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
+
 import java.util.HashSet;
 
 public class SetRule implements RuleBet{

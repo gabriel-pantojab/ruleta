@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
+
 public class UniqueRule implements RuleBet{
     private final int value;
 

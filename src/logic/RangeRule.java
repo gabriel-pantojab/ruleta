@@ -1,5 +1,9 @@
 package logic;
 
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
+
 public class RangeRule implements RuleBet{
 
     private final int minLimit;
