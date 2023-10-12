@@ -1,4 +1,7 @@
 package logic;
+/**
+ * @author Esther Romero Aguilar
+ * */
 
 import java.util.function.Function;
 

@@ -1,4 +1,7 @@
 package logic;
+/**
+ * @author Esther Romero Aguilar
+ * */
 
 public class ColorBet extends Bet{
 

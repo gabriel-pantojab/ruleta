@@ -1,6 +1,7 @@
 package logic;
-
-import java.util.function.Function;
+/**
+ * @author Esther Romero Aguilar
+ * */
 
 public class EvenConditional extends ConditionalBet{
     public EvenConditional(int amount){
