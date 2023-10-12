@@ -2,24 +2,14 @@
  * @author Esther Romero Aguilar
  * */
 
-import logic.BettingGrid;
-import logic.BettingGridBox;
+import logic.*;
+
+import java.util.function.Function;
 
 public class Main {
     public static void main(String[] args) {
-        BettingGrid bettingGrid = new BettingGrid();
-
-        BettingGridBox[][] grid = bettingGrid.getGrid();
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                BettingGridBox box = grid[i][j];
-                if (box != null) {
-                    System.out.print(box.getColor() + "\t");
-                } else {
-                    System.out.print("Vacío\t\t\t");
-                }
-            }
-            System.out.println();
-        }
+        Function<Integer, Boolean> f = v -> v % 2 == 0;
+        ConditionalRule c = new ConditionalRule(f);
+        System.out.println(c.valid(new Pocket(0, 3, ValueColor.RED)));
     }
 }
