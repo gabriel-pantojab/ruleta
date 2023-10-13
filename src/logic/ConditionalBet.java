@@ -11,5 +11,9 @@ public abstract class ConditionalBet extends Bet {
         super(1,amount, new ConditionalRule(condition));
     }
 
-    public abstract boolean validConditionalBet(Pocket pocket);
+    @Override
+    public boolean validRule(Pocket pocket) {
+        int value = pocket.getValue();
+        return  condition.apply(value);
+    }
 }
