@@ -11,7 +11,7 @@ public class OddConditional extends ConditionalBet{
             return value % 2 != 0;
         } );
     }
-
+  
     @Override
     public boolean validConditionalBet(Pocket pocket) {
         return condition.apply(pocket);
