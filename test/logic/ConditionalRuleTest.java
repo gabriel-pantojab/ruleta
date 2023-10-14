@@ -10,7 +10,10 @@ class ConditionalRuleTest {
 
     @Test
     public void evenValue() {
-        rule = new ConditionalRule(v -> v % 2 == 0);
+        rule = new ConditionalRule(v -> {
+            int value = v.getValue();
+            return value % 2 == 0;
+        });
         Pocket pocket = new Pocket(0, 12, ValueColor.RED);
         Pocket pocket1 = new Pocket(0, 13, ValueColor.RED);
         assertAll(
@@ -21,7 +24,10 @@ class ConditionalRuleTest {
 
     @Test
     public void oddValue() {
-        rule = new ConditionalRule(v -> v % 2 != 0);
+        rule = new ConditionalRule(v -> {
+            int value = v.getValue();
+            return value % 2 != 0;
+        });
         Pocket pocket = new Pocket(0, 13, ValueColor.RED);
         Pocket pocket1 = new Pocket(0, 22, ValueColor.RED);
         assertAll(
