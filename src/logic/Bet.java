@@ -26,4 +26,8 @@ public abstract class Bet {
     public RuleBet getRule() {
         return rule;
     }
+
+    public boolean validRule(Pocket pocket) {
+        return rule.valid(pocket);
+    }
 }

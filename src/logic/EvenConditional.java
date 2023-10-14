@@ -5,12 +5,9 @@ package logic;
 
 public class EvenConditional extends ConditionalBet{
     public EvenConditional(int amount){
-        super(amount, v -> v%2 == 0);
-    }
-
-    @Override
-    public boolean validConditionalBet(Pocket pocket) {
-        int value = pocket.getValue();
-        return condition.apply(value);
+        super(amount, v -> {
+            int value = v.getValue();
+            return value % 2 == 0;
+        });
     }
 }
