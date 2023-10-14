@@ -6,6 +6,9 @@ package logic;
 public class OddConditional extends ConditionalBet{
 
     public OddConditional(int amount){
-        super(amount, v -> v%2 != 0 );
+        super(amount, v -> {
+            int value = v.getValue();
+            return value % 2 != 0;
+        } );
     }
 }
