@@ -1,9 +1,9 @@
 package logic;
 /**
- * @author Esther Romero Aguilar
+ * @author Esther Romero Aguilar - Gabriel Pantoja Bustamante
  * */
 
-public class SetBet extends Bet{
+public abstract class SetBet extends Bet{
 
     public SetBet(int amount, int[] values){
         super(1, amount, new SetRule(values));
