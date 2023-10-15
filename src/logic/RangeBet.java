@@ -5,7 +5,7 @@ package logic;
 
 public abstract class RangeBet extends Bet {
 
-    public RangeBet(int bonus, int amount, int valueInit, int valueFinal){
-        super(bonus, amount, new RangeRule(valueInit, valueFinal));
+    public RangeBet(int bonus, Chip chips, int valueInit, int valueFinal){
+        super(bonus, chips, new RangeRule(valueInit, valueFinal));
     }
 }
