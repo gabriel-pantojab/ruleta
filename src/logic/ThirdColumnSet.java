@@ -1,4 +1,7 @@
 package logic;
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
 
 public class ThirdColumnSet extends SetBet{
     public ThirdColumnSet(int amount) {

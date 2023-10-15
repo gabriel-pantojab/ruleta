@@ -1,4 +1,7 @@
 package logic;
+/**
+ * @author Gabriel Pantoja Bustamante
+ * **/
 
 public class AdjacentSet extends SetBet{
     public AdjacentSet(int amount, int[] values) throws Exception {
