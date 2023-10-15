@@ -4,7 +4,7 @@ package logic;
  * */
 
 public class UniqueBet extends Bet{
-    public UniqueBet(int amount, int value){
-        super(35, amount, new UniqueRule(value));
+    public UniqueBet(Chip chip, int value){
+        super(35, chip, new UniqueRule(value));
     }
 }
