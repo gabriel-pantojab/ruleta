@@ -29,4 +29,15 @@ public class Round {
     private int existBet(Bet bet) {
         return bets.indexOf(bet);
     }
+
+    public long calculateWinAmount(Pocket pocket) {
+        long winAmount = 0;
+        for(Bet bet : bets) {
+            if(bet.validRule(pocket)) {
+                long amount = bet.getAmount();
+                winAmount += amount + bet.getBonus() * amount;
+            }
+        }
+        return winAmount;
+    }
 }

@@ -35,6 +35,14 @@ public abstract class Bet {
         return rule;
     }
 
+    public long getAmount() {
+        long amount = 0;
+        for(Chip c : chips) {
+            amount += c.getValue();
+        }
+        return amount;
+    }
+
     public boolean validRule(Pocket pocket) {
         return rule.valid(pocket);
     }
