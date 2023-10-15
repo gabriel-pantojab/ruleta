@@ -5,7 +5,7 @@ package logic;
 
 public abstract class SetBet extends Bet{
 
-    public SetBet(int bonus, int amount, int[] values){
-        super(bonus, amount, new SetRule(values));
+    public SetBet(int bonus, Chip chip, int[] values){
+        super(bonus, chip, new SetRule(values));
     }
 }

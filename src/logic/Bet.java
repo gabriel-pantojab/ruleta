@@ -1,4 +1,7 @@
 package logic;
+
+import java.util.ArrayList;
+
 /**
  * @author Esther Romero Aguilar
  * */
@@ -7,16 +10,21 @@ public abstract class Bet {
     protected RuleBet rule;
 
     protected final int bonus;
-    protected final int amount;
+    protected ArrayList<Chip> chips;
 
-    public Bet(int bonus, int amount, RuleBet rule){
+    public Bet(int bonus, Chip chip, RuleBet rule){
         this.rule = rule;
         this.bonus = bonus;
-        this.amount = amount;
+        this.chips = new ArrayList<Chip>();
+        this.chips.add(chip);
     }
 
-    public int getAmount() {
-        return amount;
+    public ArrayList<Chip> getChips() {
+        return chips;
+    }
+
+    public void addChip(Chip chip) {
+        chips.add(chip);
     }
 
     public int getBonus() {

@@ -5,8 +5,8 @@ package logic;
 
 public class LineRange extends RangeBet{
 
-    public LineRange(int amount, int valueInit, int valueFinal) throws Exception{
-        super(5, amount, valueInit, valueFinal);
+    public LineRange(Chip chip, int valueInit, int valueFinal) throws Exception{
+        super(5, chip, valueInit, valueFinal);
         if(valueInit+5 != valueFinal) throw new Exception("Invalid Range");
     }
 }
