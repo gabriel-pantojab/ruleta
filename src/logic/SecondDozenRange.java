@@ -6,6 +6,6 @@ package logic;
 public class SecondDozenRange extends RangeBet {
 
     public SecondDozenRange(int amount){
-        super(amount, 13, 24);
+        super(2, amount, 13, 24);
     }
 }
