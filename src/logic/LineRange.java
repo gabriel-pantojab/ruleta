@@ -1,4 +1,7 @@
 package logic;
+/**
+ * @author Esther Romero Aguilar
+ * */
 
 public class LineRange extends RangeBet{
 
