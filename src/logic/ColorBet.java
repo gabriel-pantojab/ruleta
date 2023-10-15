@@ -5,7 +5,7 @@ package logic;
 
 public abstract class ColorBet extends Bet{
 
-    public ColorBet(Chip chips, ValueColor color){
-        super(1, chips, new ColorRule(color));
+    public ColorBet(Chip chip, ValueColor color){
+        super(1, chip, new ColorRule(color));
     }
 }

@@ -5,7 +5,7 @@ package logic;
 
 public class FirstDozenRange extends RangeBet{
 
-    public FirstDozenRange(Chip chips){
-        super(2, chips, 1, 12);
+    public FirstDozenRange(Chip chip){
+        super(2, chip, 1, 12);
     }
 }

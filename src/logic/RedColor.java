@@ -5,7 +5,7 @@ package logic;
 
 public class RedColor extends ColorBet{
 
-    public RedColor(Chip chips){
-        super(chips, ValueColor.RED);
+    public RedColor(Chip chip){
+        super(chip, ValueColor.RED);
     }
 }
