@@ -1,5 +1,6 @@
 package logic;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -10,6 +11,7 @@ public abstract class SetBet extends Bet{
     protected Set<Integer> set;
     public SetBet(int bonus, Chip chip, int[] values){
         super(bonus, chip, new SetRule(values));
+        set = new HashSet<Integer>();
         buildSet(values);
     }
 
