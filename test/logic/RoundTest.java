@@ -13,11 +13,27 @@ class RoundTest {
     @BeforeEach
     public void setUp(){
         round = new Round();
-        pocket = new Pocket(0, 13, ValueColor.RED);
     }
 
     @Test
-    public void newRound(){
+    public void redColorBet(){
+        pocket = new Pocket(0, 36, ValueColor.RED);
+        Bet b1 = new RedColor(Chip.TEN);
+        Bet b2 = new RedColor(Chip.TEN);
+        Bet b3 = new RedColor(Chip.TEN);
+        round.toBet(b1);
+        round.toBet(b2);
+        round.toBet(b3);
+        long result = round.calculateWinAmount(pocket);
+        assertEquals(60, result);
+    }
 
+    @Test
+    public void evenBet() {
+        pocket = new Pocket(0, 8, ValueColor.BLACK);
+        Bet bet1 = new EvenConditional(Chip.HUNDRED);
+        round.toBet(bet1);
+        long result = round.calculateWinAmount(pocket);
+        assertEquals(200, result);
     }
 }
