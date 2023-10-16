@@ -14,8 +14,8 @@ public class BettingGrid {
 
     private void initializeGrid() {
         int[] type = {0,3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36,
-                    0,2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35,
-                    0,1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34};
+                      0,2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35,
+                      0,1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34};
 
         ValueColor[] colors = {
                 ValueColor.GREEN, ValueColor.RED, ValueColor.BLACK, ValueColor.RED, ValueColor.RED,
@@ -44,5 +44,9 @@ public class BettingGrid {
         this.grid = grid;
     }
 
-
+    public void putChip(int value, Chip chip){
+        int row = (int)(Math.ceil(value/3.0));
+        int column = value % 3 == 0 ? 2 : value % 3 - 1;
+        grid[row][column].addChip(chip);
+    }
 }

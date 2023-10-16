@@ -42,4 +42,8 @@ public class BettingGridBox {
     public void setChips(ArrayList<Chip> chips) {
         this.chips = chips;
     }
+
+    public void addChip(Chip chip){
+        chips.add(chip);
+    }
 }
