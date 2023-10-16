@@ -3,9 +3,28 @@ package logic;
  * @author Esther Romero Aguilar
  * */
 
-public class ColorBet extends Bet{
+public abstract class ColorBet extends Bet{
+    protected ValueColor color;
+    public ColorBet(Chip chip, ValueColor color){
+        super(1, chip, new ColorRule(color));
+        this.color = color;
+    }
 
-    public ColorBet(int amount, ValueColor color){
-        super(1, amount, new ColorRule(color));
+    public ValueColor getColor() {
+        return color;
+    }
+
+    public void setColor(ValueColor color) {
+        this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null) return false;
+        if (o instanceof ColorBet other) {
+            return other.color == this.color;
+        }
+        return false;
     }
 }

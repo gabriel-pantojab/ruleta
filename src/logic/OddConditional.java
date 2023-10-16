@@ -5,8 +5,8 @@ package logic;
 
 public class OddConditional extends ConditionalBet{
 
-    public OddConditional(int amount){
-        super(amount, v -> {
+    public OddConditional(Chip chip){
+        super(chip, v -> {
             int value = v.getValue();
             return value % 2 != 0;
         } );

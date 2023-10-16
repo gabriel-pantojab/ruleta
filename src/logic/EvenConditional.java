@@ -4,8 +4,8 @@ package logic;
  * */
 
 public class EvenConditional extends ConditionalBet{
-    public EvenConditional(int amount){
-        super(amount, v -> {
+    public EvenConditional(Chip chip){
+        super(chip, v -> {
             int value = v.getValue();
             return value % 2 == 0;
         });
