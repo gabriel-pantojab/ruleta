@@ -45,8 +45,14 @@ public class BettingGrid {
     }
 
     public void putChip(int value, Chip chip){
-        int row = (int)(Math.ceil(value/3.0));
-        int column = value % 3 == 0 ? 2 : value % 3 - 1;
-        grid[row][column].addChip(chip);
+        if(value == 0){
+            grid[0][0].addChip(chip);
+            grid[0][1].addChip(chip);
+            grid[0][2].addChip(chip);
+        }else{
+            int column = (int)(Math.ceil(value/3.0));
+            int row = value % 3 == 0 ? 2 : value % 3 - 1;
+            grid[row][column].addChip(chip);
+        }
     }
 }
