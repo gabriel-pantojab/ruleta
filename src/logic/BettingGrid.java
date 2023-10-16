@@ -31,11 +31,7 @@ public class BettingGrid {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 13; j++) {
                 int index = (i * 13) + j;
-                if (index < type.length) {
-                    grid[i][j] = new BettingGridBox(type[index], colors[index], 0);
-                } else {
-                    grid[i][j] = null;
-                }
+                grid[i][j] = new BettingGridBox(type[index], colors[index], 0);
             }
         }
     }
