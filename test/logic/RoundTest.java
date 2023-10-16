@@ -36,4 +36,15 @@ class RoundTest {
         long result = round.calculateWinAmount(pocket);
         assertEquals(200, result);
     }
+
+    @Test
+    public void firstColumnAndSecondDozen() {
+        pocket = new Pocket(0, 26, ValueColor.BLACK);
+        Bet b1 = new FirstColumnSet(Chip.HUNDRED);
+        Bet b2 = new SecondDozenRange(Chip.HUNDRED);
+        round.toBet(b1);
+        round.toBet(b2);
+        long result = round.calculateWinAmount(pocket);
+        assertEquals(0, result);
+    }
 }
