@@ -1,19 +1,21 @@
 package logic;
 
+import java.util.ArrayList;
+
 /**
  * @author Esther Romero Aguilar
  * */
 
 public class BettingGridBox {
 
-    private int num;
-    private ValueColor color;
+    private ArrayList<Chip> chips;
     private int value;
+    private ValueColor color;
 
-    public BettingGridBox(int num, ValueColor color, int value) {
-        this.num = num;
+    public BettingGridBox(ValueColor color, int value) {
         this.color = color;
         this.value = value;
+        chips = new ArrayList<Chip>();
     }
 
     public void setColor(ValueColor color) {
@@ -25,19 +27,19 @@ public class BettingGridBox {
         return color;
     }
 
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
     public void setValue(int value) {
         this.value = value;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public ArrayList<Chip> getChips() {
+        return chips;
+    }
+
+    public void setChips(ArrayList<Chip> chips) {
+        this.chips = chips;
     }
 }

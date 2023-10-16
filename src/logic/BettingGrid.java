@@ -31,7 +31,7 @@ public class BettingGrid {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 13; j++) {
                 int index = (i * 13) + j;
-                grid[i][j] = new BettingGridBox(type[index], colors[index], 0);
+                grid[i][j] = new BettingGridBox(colors[index], type[index]);
             }
         }
     }
@@ -43,4 +43,6 @@ public class BettingGrid {
     public void setGrid(BettingGridBox[][] grid) {
         this.grid = grid;
     }
+
+
 }
