@@ -40,4 +40,29 @@ public class Round {
         }
         return winAmount;
     }
+
+    public void setBets(ArrayList<Bet> bets) {
+        this.bets = bets;
+    }
+
+    public void setTotalBet(long totalBet) {
+        this.totalBet = totalBet;
+    }
+
+    public ArrayList<Bet> getBets() {
+        return bets;
+    }
+
+    public long getTotalBet() {
+        return totalBet;
+    }
+
+    @Override
+    public Object clone() {
+        ArrayList<Bet> newBets = new ArrayList<Bet>(bets);
+        Round newRound = new Round();
+        newRound.setBets(newBets);
+        newRound.setTotalBet(totalBet);
+        return newRound;
+    }
 }
