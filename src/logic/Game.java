@@ -5,28 +5,34 @@ import java.util.Stack;
 
 public class Game {
     private long balance;
-    private Stack<Pocket> rounds;
+    private Stack<Round> rounds;
     private Round currentRound;
     private Roulette roulette;
     private BettingGrid bettingGrid;
     private ArrayList<Chip> chips;
 
     public Game (long balance) throws Exception {
-        rounds = new Stack<Pocket>();
+        rounds = new Stack<Round>();
+        roulette = new Roulette();
         this.balance = balance;
         if(balance > 1000000000000L) throw new Exception("The amount must be less than one billon");
     }
 
     public void createNewRound(){
+        rounds.push(new Round());
+        currentRound = rounds.peek();
     }
 
     public void subtractBalance(int amount){
+        balance -= amount;
     }
 
-    public void updateBalance(){}
+    public void updateBalance(){
+    }
 
     public Pocket spinRoulette(){
-        return null;
+        roulette.spin();
+        return roulette.getCurrentPocket();
     }
 
     public boolean toBetInRound(){
