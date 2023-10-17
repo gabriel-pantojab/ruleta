@@ -20,7 +20,7 @@ public class Game {
     public void createNewRound(){
     }
 
-    public void subtractBalance(int amount){
+    public void subtractBalance(long amount){
     }
 
     public void updateBalance(){}
@@ -29,8 +29,18 @@ public class Game {
         return null;
     }
 
-    public boolean toBetInRound(){
-        return false;
+    public boolean toBetInRound(Bet bet){
+        boolean success = false;
+        long amount = 0;
+        for(Chip c : bet.getChips()) {
+            amount += c.getValue();
+        }
+        if(amount <= balance) {
+            currentRound.toBet(bet);
+            subtractBalance(amount);
+            success = true;
+        }
+        return success;
     }
 
     public void updateChips(){}
