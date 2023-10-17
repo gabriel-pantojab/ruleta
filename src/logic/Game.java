@@ -5,16 +5,41 @@ import java.util.Stack;
 
 public class Game {
     private long balance;
-    private Stack<Pocket> rounds;
+    private Stack<Round> rounds;
     private Round currentRound;
     private Roulette roulette;
     private BettingGrid bettingGrid;
-    private ArrayList<Chip> chips;
+    private ArrayList<Chip> chipsAvailable;
+
+    private final Chip[] orderedChips;
 
     public Game (long balance) throws Exception {
-        rounds = new Stack<Pocket>();
-        this.balance = balance;
         if(balance > 1000000000000L) throw new Exception("The amount must be less than one billon");
+        chipsAvailable = new ArrayList<Chip>();
+        rounds = new Stack<Round>();
+        this.balance = balance;
+        orderedChips = new Chip[]{
+                Chip.ONE,
+                Chip.FIVE,
+                Chip.TEN,
+                Chip.FIFTY,
+                Chip.HUNDRED,
+                Chip.TEN_THOUSAND,
+                Chip.HUNDRED_THOUSAND,
+                Chip.ONE_MILLION,
+                Chip.TEN_MILLION,
+                Chip.HUNDRED_MILLION,
+                Chip.ONE_BILLION
+        };
+        createChipsAvailable(balance);
+    }
+
+    private void createChipsAvailable(long balance) {
+        for (Chip chip : orderedChips) {
+            if (chip.getValue() <= balance) {
+                chipsAvailable.add(chip);
+            }
+        }
     }
 
     public void createNewRound(){
@@ -23,7 +48,10 @@ public class Game {
     public void subtractBalance(long amount){
     }
 
-    public void updateBalance(){}
+    public void updateBalance(long winAmount){
+        balance += winAmount;
+        updateChips();
+    }
 
     public Pocket spinRoulette(){
         return null;
@@ -38,14 +66,31 @@ public class Game {
         if(amount <= balance) {
             currentRound.toBet(bet);
             subtractBalance(amount);
+            updateChips();
             success = true;
         }
         return success;
     }
 
-    public void updateChips(){}
+    private void updateChips() {
+        int index = chipsAvailable.size() - 1;
+        Chip max = chipsAvailable.get(index);
+        if(max.getValue() <= balance) {
+            for(int i = index + 1; i < orderedChips.length; i++) {
+                if (orderedChips[i].getValue() <= balance) {
+                    chipsAvailable.add(orderedChips[i]);
+                }
+            }
+        }else {
+            chipsAvailable.remove(index);
+        }
+    }
 
     public long getWinAmount(Pocket pocket){
-        return 0;
+        return currentRound.calculateWinAmount(pocket);
+    }
+
+    public ArrayList<Chip> getChipsAvailable() {
+        return  chipsAvailable;
     }
 }
