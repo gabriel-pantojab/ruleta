@@ -12,12 +12,12 @@ public class Game {
     private ArrayList<Chip> chipsAvailable;
 
     private final Chip[] orderedChips;
-
     public Game (long balance) throws Exception {
         if(balance > 1000000000000L) throw new Exception("The amount must be less than one billon");
-        chipsAvailable = new ArrayList<Chip>();
         rounds = new Stack<Round>();
+        roulette = new Roulette();
         this.balance = balance;
+        chipsAvailable = new ArrayList<Chip>();
         orderedChips = new Chip[]{
                 Chip.ONE,
                 Chip.FIVE,
@@ -43,18 +43,22 @@ public class Game {
     }
 
     public void createNewRound(){
+        rounds.push(new Round());
+        currentRound = rounds.peek();
     }
 
-    public void subtractBalance(long amount){
-    }
-
-    public void updateBalance(long winAmount){
+    public void updateBalance(long winAmount) {
         balance += winAmount;
         updateChips();
     }
 
+    public void subtractBalance(long amount){
+        balance -= amount;
+    }
+
     public Pocket spinRoulette(){
-        return null;
+        roulette.spin();
+        return roulette.getCurrentPocket();
     }
 
     public boolean toBetInRound(Bet bet){
