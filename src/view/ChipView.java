@@ -7,12 +7,14 @@ import java.awt.*;
 public class ChipView {
     private int x, y;
     private final String value;
+    private Chip chip;
     private int radio;
     private Color color;
     public ChipView(Chip chip, Color color) {
         x = 0;
         y = 0;
         radio = 17;
+        this.chip = chip;
         this.value = chip.getValue() + "";
         this.color = color;
     }
@@ -53,4 +55,15 @@ public class ChipView {
     public int getX() {
         return x;
     }
-}
+    public void setLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public Object clone() {
+        ChipView c = new ChipView(chip, new Color(color.getRGB()));
+        c.setLocation(x, y);
+        return c;
+    }
+ }
