@@ -8,7 +8,5 @@ import view.RouletteGame;
 import java.util.function.Function;
 
 public class Main {
-    public static void main(String[] args) {
-        new RouletteGame();
-    }
+    public static void main(String[] args) {}
 }

@@ -1,11 +1,13 @@
 package view;
 
+import logic.BettingGrid;
+
 import javax.swing.*;
 
 public class RouletteGame extends JFrame {
-    public RouletteGame() {
+    public RouletteGame(BettingGrid grid) {
         setTitle("Roulette 🙂🛞");
-        TableView table = new TableView();
+        TableView table = new TableView(grid);
         setBounds(0, 0,1000, 600);
         add(table);
         setResizable(false);
