@@ -2,6 +2,7 @@ package view;
 
 import logic.BettingGrid;
 import logic.BettingGridBox;
+import logic.Chip;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,9 +47,14 @@ public class TableView extends JPanel implements MouseListener {
         int x = e.getX();
         int y = e.getY();
         for(BettingGridBoxView b : boxes) {
-            if(b.contains(x, y)) System.out.println("Dentro");
+            if(b.contains(x, y)) {
+                b.setLastChip(new ChipView(Chip.FIVE, Color.BLUE));
+                b.getLastChip().setX(b.getX() + 6);
+                b.getLastChip().setY(b.getY() + 13);
+            }
             if(b.clickBorder(x, y)) System.out.println("Border");
         }
+        repaint();
     }
 
     @Override

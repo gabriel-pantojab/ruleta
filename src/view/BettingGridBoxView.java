@@ -11,6 +11,7 @@ public class BettingGridBoxView {
     private int height;
     private String value;
     private Color color;
+    private ChipView lastChip;
 
     public BettingGridBoxView(int x, int y, int width, int height,
                               String value, Color color) {
@@ -20,6 +21,7 @@ public class BettingGridBoxView {
         this.width = width;
         this.height = height;
         this.color = color;
+        lastChip = null;
     }
 
     public String getValue() {
@@ -35,6 +37,9 @@ public class BettingGridBoxView {
         g.drawRect(x, y, width, height);
         g.setFont(new Font("arial", Font.BOLD, 30));
         g.drawString(value, x + 7, y + height/2 + 12);
+        if(lastChip != null) {
+            lastChip.paint(g);
+        }
     }
 
     public boolean contains(int x, int y) {
@@ -54,5 +59,21 @@ public class BettingGridBoxView {
         boolean right =
                 y >= this.y && y <= this.y + height && x >= this.x + width - 2 && x <= this.x + width + 1;
         return up || down || left || right;
+    }
+
+    public ChipView getLastChip() {
+        return lastChip;
+    }
+
+    public void setLastChip(ChipView chip) {
+        lastChip = chip;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
