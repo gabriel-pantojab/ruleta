@@ -5,17 +5,24 @@ import logic.BettingGridBox;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
-public class TableView extends JPanel {
+public class TableView extends JPanel implements MouseListener {
     private BettingGrid grid;
+    private ArrayList<BettingGridBoxView> boxes;
     public TableView() {
         setLayout(null);
         setBackground(new Color(2, 76, 20));
+        boxes = new ArrayList<BettingGridBoxView>();
         grid = new BettingGrid();
+        buildBoxes();
+        addMouseListener(this);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+
+    private void buildBoxes() {
         for(int i = 0; i < grid.getGrid().length; i++) {
             for(int j = 0; j < grid.getGrid()[i].length; j++) {
                 BettingGridBox b = grid.getGrid()[i][j];
@@ -24,8 +31,43 @@ public class TableView extends JPanel {
                                 i*Constants.HEIGHT_GRID_BOX + 100,
                                 Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
                                 b.getValue()+"", b.getColor().getColor());
-                b2.paint((Graphics2D) g);
+                boxes.add(b2);
             }
         }
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for(BettingGridBoxView b : boxes) b.paint((Graphics2D)g);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        for(BettingGridBoxView b : boxes) {
+            if(b.contains(x, y)) System.out.println("Dentro");
+            if(b.clickBorder(x, y)) System.out.println("Border");
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
