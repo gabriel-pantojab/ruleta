@@ -30,7 +30,6 @@ public class BettingGridBoxView {
         g.setStroke(wideStroke);
         g.drawRect(x, y, width, height);
         g.setFont(new Font("arial", Font.BOLD, 30));
-        System.out.println(y);
         g.drawString(value, x + 7, y + height/2 + 12);
     }
 }
