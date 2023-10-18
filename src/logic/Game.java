@@ -32,6 +32,7 @@ public class Game {
                 Chip.ONE_BILLION
         };
         createChipsAvailable(balance);
+        createNewRound();
     }
 
     private void createChipsAvailable(long balance) {
