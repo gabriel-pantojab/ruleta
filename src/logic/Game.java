@@ -1,4 +1,7 @@
 package logic;
+/**
+ * @author Esther Romero - Gabriel Pantoja
+ */
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -14,6 +17,7 @@ public class Game {
     private final Chip[] orderedChips;
     public Game (long balance) throws Exception {
         if(balance > 1000000000000L) throw new Exception("The amount must be less than one billon");
+        bettingGrid = new BettingGrid();
         rounds = new Stack<Round>();
         roulette = new Roulette();
         this.balance = balance;
@@ -69,6 +73,11 @@ public class Game {
             amount += c.getValue();
         }
         if(amount <= balance) {
+            if(bet instanceof UniqueBet uniqueBet) {
+                int lastChip = uniqueBet.getChips().size() - 1;
+                bettingGrid.putChip(uniqueBet.getValue(),
+                        uniqueBet.getChips().get(lastChip));
+            }
             currentRound.toBet(bet);
             subtractBalance(amount);
             updateChips();
@@ -109,5 +118,9 @@ public class Game {
 
     public Stack<Round> getRounds() {
         return rounds;
+    }
+
+    public BettingGrid getBettingGrid() {
+        return bettingGrid;
     }
 }
