@@ -97,4 +97,16 @@ public class Game {
     public ArrayList<Chip> getChipsAvailable() {
         return  chipsAvailable;
     }
+
+    public long getBalance(){
+        return balance;
+    }
+
+    public Round getCurrentRound() {
+        return currentRound;
+    }
+
+    public Stack<Round> getRounds() {
+        return rounds;
+    }
 }
