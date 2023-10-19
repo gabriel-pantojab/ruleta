@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class TableView extends JPanel {
     private BettingGrid grid;
     private ArrayList<BettingGridBoxView> boxes;
+    private ChipView currentChip;
     public TableView(BettingGrid grid) {
         setLayout(null);
         setBackground(new Color(2, 76, 20));
@@ -20,6 +21,15 @@ public class TableView extends JPanel {
         this.grid = grid;
         buildBoxes();
         setCursor(new Cursor(Cursor.HAND_CURSOR));
+        currentChip = new ChipView(Chip.FIVE, Color.BLUE);
+    }
+
+    public void setCurrentChip(ChipView currentChip) {
+        this.currentChip = currentChip;
+    }
+
+    public ChipView getCurrentChip() {
+        return currentChip;
     }
 
     private void buildBoxes() {
@@ -38,6 +48,25 @@ public class TableView extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(BettingGridBoxView b : boxes) b.paint((Graphics2D)g);
+        for (BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
+        if(currentChip != null) currentChip.paint((Graphics2D) g);
+    }
+
+    public boolean toBet(int x, int y) {
+        boolean ans = false;
+        if(currentChip == null) return false;
+        for(BettingGridBoxView b : boxes) {
+            if(b.contains(x, y)) {
+                b.setLastChip((ChipView) currentChip.clone());
+                b.getLastChip().setLocation(b.getX() + 6, b.getY() + 13);
+                ans = true;
+                break;
+            }
+        }
+        return ans;
+    }
+
+    public void setLocationCurrentChip(int x, int y) {
+        currentChip.setLocation(x - currentChip.getRadio(), y - currentChip.getRadio());
     }
 }
