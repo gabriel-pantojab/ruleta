@@ -1,29 +1,16 @@
 package view;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
-public class BettingGridBoxView {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+public class BettingGridBoxView extends BoxElement {
     private String value;
-    private Color color;
     private ChipView lastChip;
-    private boolean select;
 
     public BettingGridBoxView(int x, int y, int width, int height,
                               String value, Color color) {
+        super(x, y, width, height, color);
         this.value = value;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.color = color;
         lastChip = null;
-        select = false;
     }
 
     public String getValue() {
@@ -40,31 +27,12 @@ public class BettingGridBoxView {
         g.setFont(new Font("arial", Font.BOLD, 30));
         g.drawString(value, x + 7, y + height/2 + 12);
         if(select) {
-            g.setColor(new Color(255, 254, 145, 150));
+            g.setColor(new Color(145, 255, 189, 150));
             g.fillRect(x, y, width, height);
         }
         if(lastChip != null) {
             lastChip.paint(g);
         }
-    }
-
-    public boolean contains(int x, int y) {
-        Rectangle r = new Rectangle(this.x + 4, this.y + 4, width - 8,
-                height - 8);
-        return r.contains(x, y);
-    }
-
-    public boolean clickBorder(int x, int y) {
-        boolean up = x >= this.x && x <= this.x + width && (y >= this.y - 3 && y
-                <= this.y + 3);
-        boolean down =
-                x >= this.x && x <= this.x + width && (y >= this.y + height - 3  && y
-                <= this.y + height + 3);
-        boolean left =
-                y >= this.y && y <= this.y + height && x >= this.x - 3 && x <= this.x + 3;
-        boolean right =
-                y >= this.y && y <= this.y + height && x >= this.x + width - 3 && x <= this.x + width + 3;
-        return up || down || left || right;
     }
 
     public ChipView getLastChip() {
@@ -73,17 +41,5 @@ public class BettingGridBoxView {
 
     public void setLastChip(ChipView chip) {
         lastChip = chip;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setSelect(boolean select) {
-        this.select = select;
     }
 }

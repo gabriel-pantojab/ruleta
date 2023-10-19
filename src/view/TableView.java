@@ -16,6 +16,7 @@ public class TableView extends JPanel {
     private ArrayList<ChipView> chipsAvailable;
 
     private RouletteView roulette;
+    private ArrayList<ChipView> chipsInBoxes;
 
     public TableView(BettingGrid grid) {
         setLayout(null);
@@ -26,6 +27,7 @@ public class TableView extends JPanel {
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         currentChip = null;
         chipsAvailable = new ArrayList<ChipView>();
+        chipsInBoxes = new ArrayList<ChipView>();
         indexCurrentChip = -1;
         roulette = new RouletteView();
         add(roulette);
@@ -63,6 +65,7 @@ public class TableView extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
+        for(ChipView c : chipsInBoxes) c.paint((Graphics2D) g);
         if(currentChip != null) currentChip.paint((Graphics2D) g);
         g.setColor(new Color(66, 66, 66));
         g.fillRect(0, 463, 1200, 100);
@@ -83,6 +86,11 @@ public class TableView extends JPanel {
                 b.getLastChip().setLocation(b.getX() + 6, b.getY() + 13);
                 ans = true;
                 break;
+            }else if(b.clickBorder(x, y)) {
+                ChipView c = (ChipView) currentChip.clone();
+                c.setActive(true);
+                chipsInBoxes.add(c);
+                ans = true;
             }
         }
         return ans;
