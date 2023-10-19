@@ -10,13 +10,53 @@ public class ChipView {
     private Chip chip;
     private int radio;
     private Color color;
-    public ChipView(Chip chip, Color color) {
+    public ChipView(Chip chip) {
         x = 0;
         y = 0;
         radio = 17;
         this.chip = chip;
-        this.value = chip.getValue() + "";
-        this.color = color;
+        this.value = getValueText(chip);
+        updateColor(chip);
+    }
+
+    public String getValueText(Chip c) {
+        String ans = "";
+        switch (c)  {
+            case ONE -> ans = "1";
+            case FIVE -> ans = "5";
+            case TEN -> ans = "10";
+            case FIFTY -> ans = "50";
+            case HUNDRED -> ans = "100";
+            case FIVE_HUNDRED -> ans = "500";
+            case ONE_THOUSAND -> ans = "1K";
+            case TEN_THOUSAND -> ans = "10K";
+            case HUNDRED_THOUSAND -> ans = "100K";
+            case ONE_MILLION -> ans = "1M";
+            case TEN_MILLION -> ans = "10M";
+            case HUNDRED_MILLION -> ans = "100M";
+            case ONE_BILLION -> ans = "1B";
+            default -> ans = "";
+        }
+        return ans;
+    }
+
+    private void updateColor(Chip c) {
+        switch (c) {
+            case ONE -> color = new Color(50, 130, 246);
+            case FIVE -> color = new Color(117, 250, 141);
+            case TEN -> color = new Color(240, 81, 99);
+            case FIFTY -> color = new Color(119, 67, 66);
+            case HUNDRED -> color = new Color(125, 62, 245);
+            case FIVE_HUNDRED -> color = new Color(255, 253, 85);
+            case ONE_THOUSAND -> color = new Color(218, 95, 247);
+            case TEN_THOUSAND -> color = new Color(91, 247, 226);
+            case HUNDRED_THOUSAND -> color = new Color(127, 130, 187);
+            case ONE_MILLION -> color = new Color(55, 126, 71);
+            case TEN_MILLION -> color = new Color(129, 128, 73);
+            case HUNDRED_MILLION -> color = new Color(240, 134, 80);
+            case ONE_BILLION -> color = new Color(128, 128, 128);
+            default -> color = Color.BLUE;
+        }
     }
 
     public void paint(Graphics2D g) {
@@ -62,7 +102,7 @@ public class ChipView {
 
     @Override
     public Object clone() {
-        ChipView c = new ChipView(chip, new Color(color.getRGB()));
+        ChipView c = new ChipView(chip);
         c.setRadio(this.radio);
         c.setLocation(x, y);
         return c;

@@ -79,7 +79,7 @@ public class TableView extends JPanel {
         int x = 20, y = 480;
         int radio = 30;
         for(Chip c : chips) {
-            ChipView cV = new ChipView(c, Color.BLUE);
+            ChipView cV = new ChipView(c);
             cV.setRadio(radio);
             cV.setLocation(x, y);
             x += 2*radio + 10;
