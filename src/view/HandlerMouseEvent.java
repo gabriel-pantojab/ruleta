@@ -16,6 +16,12 @@ public class HandlerMouseEvent extends MouseAdapter {
         int x = e.getX();
         int y = e.getY();
         table.toBet(x, y);
+        for(ChipView c : table.getChipsAvailable()) {
+            if(c.contains(x, y)) {
+                table.setCurrentChip((ChipView) c.clone());
+                table.getCurrentChip().setRadio(17);
+            }
+        }
         table.repaint();
     }
 
@@ -23,7 +29,9 @@ public class HandlerMouseEvent extends MouseAdapter {
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        if(table.getCurrentChip() != null) table.setLocationCurrentChip(x, y);
+        if(table.getCurrentChip() != null) {
+            table.setLocationCurrentChip(x, y);
+        }
         table.repaint();
     }
 }

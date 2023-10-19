@@ -14,7 +14,7 @@ public class TableView extends JPanel {
     private BettingGrid grid;
     private ArrayList<BettingGridBoxView> boxes;
     private ChipView currentChip;
-    private ChipContainer chipsAvailable;
+    private ArrayList<ChipView> chipsAvailable;
     public TableView(BettingGrid grid) {
         setLayout(null);
         setBackground(new Color(2, 76, 20));
@@ -23,9 +23,7 @@ public class TableView extends JPanel {
         buildBoxes();
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         currentChip = null;
-        chipsAvailable = new ChipContainer(this);
-        chipsAvailable.setBounds(0, 463, 1000, 100);
-        add(chipsAvailable);
+        chipsAvailable = new ArrayList<ChipView>();
     }
 
     public void setCurrentChip(ChipView currentChip) {
@@ -53,6 +51,7 @@ public class TableView extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
+        for (ChipView c : chipsAvailable) c.paint((Graphics2D) g);
         if(currentChip != null) currentChip.paint((Graphics2D) g);
     }
 
@@ -62,6 +61,7 @@ public class TableView extends JPanel {
         for(BettingGridBoxView b : boxes) {
             if(b.contains(x, y)) {
                 b.setLastChip((ChipView) currentChip.clone());
+                b.getLastChip().setRadio(17);
                 b.getLastChip().setLocation(b.getX() + 6, b.getY() + 13);
                 ans = true;
                 break;
@@ -75,6 +75,24 @@ public class TableView extends JPanel {
     }
 
     public void updateChipsAvailable(ArrayList<Chip> chips) {
-        chipsAvailable.updateChips(chips);
+        chipsAvailable.clear();
+        int x = 20, y = 480;
+        int radio = 30;
+        for(Chip c : chips) {
+            ChipView cV = new ChipView(c, Color.BLUE);
+            cV.setRadio(radio);
+            cV.setLocation(x, y);
+            x += 2*radio + 10;
+            chipsAvailable.add(cV);
+        }
+        repaint();
+    }
+
+    public ArrayList<ChipView> getChipsAvailable() {
+        return chipsAvailable;
+    }
+
+    public ArrayList<BettingGridBoxView> getBoxes() {
+        return boxes;
     }
 }

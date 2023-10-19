@@ -63,6 +63,7 @@ public class ChipView {
     @Override
     public Object clone() {
         ChipView c = new ChipView(chip, new Color(color.getRGB()));
+        c.setRadio(this.radio);
         c.setLocation(x, y);
         return c;
     }
