@@ -1,5 +1,7 @@
 package view;
 
+import logic.ValueColor;
+
 import java.awt.*;
 
 public interface Constants {
@@ -33,7 +35,7 @@ public interface Constants {
             new PocketView(164, 426,  35, 70, 212, Color.BLACK, "35"),
             new PocketView(136, 412,  35, 70, 219, Color.RED, " 3"),
             new PocketView(115, 390,  35, 70, 228, Color.BLACK, "26"),
-            new PocketView(93, 366,  35, 70, -125, Color.GREEN, "0"),
+            new PocketView(93, 366,  35, 70, -125, ValueColor.GREEN.getColor(), "0"),
             new PocketView(78, 340,  35, 70, -116, Color.RED, "32"),
             new PocketView(70, 312,  35, 70, -107, Color.BLACK, "15"),
             ////

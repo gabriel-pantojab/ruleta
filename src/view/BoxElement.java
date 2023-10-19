@@ -2,11 +2,12 @@ package view;
 
 import java.awt.*;
 
-public abstract class BoxElement {
+public class BoxElement {
     protected int x, y;
     protected int width, height;
     protected Color color;
     protected boolean select;
+    protected ChipView lastChip;
 
     public BoxElement(int x, int y, int width, int height, Color color) {
         this.x = x;
@@ -15,6 +16,15 @@ public abstract class BoxElement {
         this.height = height;
         this.color = color;
         this.select = false;
+        this.lastChip = null;
+    }
+
+    public void setLastChip(ChipView lastChip) {
+        this.lastChip = lastChip;
+    }
+
+    public ChipView getLastChip() {
+        return lastChip;
     }
 
     public Color getColor() {
@@ -97,5 +107,10 @@ public abstract class BoxElement {
         return y >= this.y && y <= this.y + height && x >= this.x + width - 3 && x <= this.x + width + 3;
     }
 
-    public abstract void paint(Graphics2D g);
+    public void paint(Graphics2D g) {
+        if(select) {
+            g.setColor(new Color(145, 255, 189, 150));
+            g.fillRect(x, y, width, height);
+        }
+    }
 }

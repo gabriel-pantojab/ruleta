@@ -3,6 +3,7 @@ package view;
 import logic.BettingGrid;
 import logic.BettingGridBox;
 import logic.Chip;
+import logic.ValueColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,18 +11,30 @@ import java.util.ArrayList;
 
 public class TableView extends JPanel {
     private BettingGrid grid;
-    private ArrayList<BettingGridBoxView> boxes;
+    private ArrayList<BoxElement> boxes;
     private ChipView currentChip;
     private int indexCurrentChip;
     private ArrayList<ChipView> chipsAvailable;
 
     private RouletteView roulette;
     private ArrayList<ChipView> chipsInBoxes;
+    private ArrayList<BetBox> betBoxes;
 
     public TableView(BettingGrid grid) {
         setLayout(null);
         setBackground(new Color(3, 51, 6));
-        boxes = new ArrayList<BettingGridBoxView>();
+        boxes = new ArrayList<BoxElement>();
+        betBoxes = new ArrayList<BetBox>();
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 278, Constants.WIDTH_GRID_BOX * 4, 50, " 1-12"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 278, Constants.WIDTH_GRID_BOX * 4, 50, "13-24"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 278, Constants.WIDTH_GRID_BOX * 4, 50, "25-36"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 328, Constants.WIDTH_GRID_BOX * 2, 50, " 1-18"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 2, 328, Constants.WIDTH_GRID_BOX * 2, 50, "EVEN"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.RED.getColor()));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 6, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.BLACK.getColor()));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "ODD"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 10, 328, Constants.WIDTH_GRID_BOX * 2, 50, "19-36"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "1st"));
         this.grid = grid;
         buildBoxes();
         setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -31,6 +44,10 @@ public class TableView extends JPanel {
         indexCurrentChip = -1;
         roulette = new RouletteView();
         add(roulette);
+    }
+
+    public ArrayList<BetBox> getBetBoxes() {
+        return betBoxes;
     }
 
     public void setCurrentChip(ChipView currentChip) {
@@ -48,23 +65,30 @@ public class TableView extends JPanel {
     private void buildBoxes() {
         for(int i = 0; i < grid.getGrid().length; i++) {
             for(int j = 0; j < grid.getGrid()[i].length; j++) {
-                BettingGridBox b = grid.getGrid()[i][j];
-                String value = b.getValue() + "";
-                int n = value.length();
-                String spaces = n < 2 ? " " : "";
-                BettingGridBoxView b2 =
-                        new BettingGridBoxView(j*Constants.WIDTH_GRID_BOX + 400,
-                                i*Constants.HEIGHT_GRID_BOX + 100,
-                                Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
-                                spaces + value, b.getColor().getColor());
+                BettingGridBoxView b2 = getBettingGridBoxView(i, j);
                 boxes.add(b2);
             }
+            String text = " " + (3 - i) + "°";
+            boxes.add(new BetBox(grid.getGrid()[i].length * Constants.WIDTH_GRID_BOX + 450, i * Constants.HEIGHT_GRID_BOX + 100, Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX, text));
         }
     }
+
+    private BettingGridBoxView getBettingGridBoxView(int i, int j) {
+        BettingGridBox b = grid.getGrid()[i][j];
+        String value = b.getValue() + "";
+        int n = value.length();
+        String spaces = n < 2 ? " " : "";
+        return new BettingGridBoxView(j *Constants.WIDTH_GRID_BOX + 450,
+                        i *Constants.HEIGHT_GRID_BOX + 100,
+                        Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
+                        spaces + value, b.getColor().getColor());
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
+        for (BoxElement b : boxes) b.paint((Graphics2D) g);
+        for(BetBox b : betBoxes) b.paint((Graphics2D) g);
         for(ChipView c : chipsInBoxes) c.paint((Graphics2D) g);
         if(currentChip != null) currentChip.paint((Graphics2D) g);
         g.setColor(new Color(66, 66, 66));
@@ -78,7 +102,7 @@ public class TableView extends JPanel {
     public boolean toBet(int x, int y) {
         boolean ans = false;
         if(currentChip == null) return false;
-        for(BettingGridBoxView b : boxes) {
+        for(BoxElement b : boxes) {
             if(b.contains(x, y)) {
                 b.setLastChip((ChipView) currentChip.clone());
                 b.getLastChip().setActive(true);
@@ -118,7 +142,7 @@ public class TableView extends JPanel {
         return chipsAvailable;
     }
 
-    public ArrayList<BettingGridBoxView> getBoxes() {
+    public ArrayList<BoxElement> getBoxes() {
         return boxes;
     }
 }

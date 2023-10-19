@@ -33,8 +33,11 @@ public class HandlerMouseEvent extends MouseAdapter {
         int x = e.getX();
         int y = e.getY();
         if(table.getCurrentChip() != null) {
-            for(BettingGridBoxView b : table.getBoxes()) {
+            for(BoxElement b : table.getBoxes()) {
                 b.setSelect(b.contains(x, y) || b.clickBorder(x, y));
+            }
+            for(BetBox b : table.getBetBoxes()) {
+                b.setSelect(b.contains(x, y));
             }
             table.setLocationCurrentChip(x, y);
         }
