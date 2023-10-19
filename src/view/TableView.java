@@ -6,8 +6,6 @@ import logic.Chip;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class TableView extends JPanel {
@@ -15,6 +13,7 @@ public class TableView extends JPanel {
     private ArrayList<BettingGridBoxView> boxes;
     private ChipView currentChip;
     private ArrayList<ChipView> chipsAvailable;
+
     public TableView(BettingGrid grid) {
         setLayout(null);
         setBackground(new Color(2, 76, 20));
@@ -38,11 +37,14 @@ public class TableView extends JPanel {
         for(int i = 0; i < grid.getGrid().length; i++) {
             for(int j = 0; j < grid.getGrid()[i].length; j++) {
                 BettingGridBox b = grid.getGrid()[i][j];
+                String value = b.getValue() + "";
+                int n = value.length();
+                String spaces = n < 2 ? " " : "";
                 BettingGridBoxView b2 =
                         new BettingGridBoxView(j*Constants.WIDTH_GRID_BOX + 300,
                                 i*Constants.HEIGHT_GRID_BOX + 100,
                                 Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
-                                b.getValue()+"", b.getColor().getColor());
+                                spaces + value, b.getColor().getColor());
                 boxes.add(b2);
             }
         }
@@ -51,8 +53,10 @@ public class TableView extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
-        for (ChipView c : chipsAvailable) c.paint((Graphics2D) g);
         if(currentChip != null) currentChip.paint((Graphics2D) g);
+        g.setColor(new Color(94, 62, 44));
+        g.fillRect(0, 463, 960, 100);
+        for (ChipView c : chipsAvailable) c.paint((Graphics2D) g);
     }
 
     public boolean toBet(int x, int y) {
@@ -79,7 +83,7 @@ public class TableView extends JPanel {
         int x = 20, y = 480;
         int radio = 30;
         for(Chip c : chips) {
-            ChipView cV = new ChipView(c);
+            ChipView cV = new ChipView(c, 16);
             cV.setRadio(radio);
             cV.setLocation(x, y);
             x += 2*radio + 10;

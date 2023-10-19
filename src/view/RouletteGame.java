@@ -5,7 +5,7 @@ import javax.swing.*;
 public class RouletteGame extends JFrame {
     public RouletteGame(TableView table) {
         setTitle("Roulette 🙂🛞");
-        setBounds(0, 0,1000, 600);
+        setBounds(0, 0,960, 600);
         add(table);
         setResizable(false);
         setLocationRelativeTo(null);

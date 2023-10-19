@@ -20,6 +20,7 @@ public class HandlerMouseEvent extends MouseAdapter {
             if(c.contains(x, y)) {
                 table.setCurrentChip((ChipView) c.clone());
                 table.getCurrentChip().setRadio(17);
+                table.getCurrentChip().setFontSize(10);
             }
         }
         table.repaint();
