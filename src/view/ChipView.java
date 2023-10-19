@@ -11,10 +11,12 @@ public class ChipView {
     private int radio;
     private Color color;
     private int fontSize;
+    private boolean active;
     public ChipView(Chip chip, int fontSize) {
         x = 0;
         y = 0;
         radio = 17;
+        active = false;
         this.chip = chip;
         this.value = getValueText(chip);
         this.fontSize = fontSize;
@@ -80,6 +82,10 @@ public class ChipView {
         g.setColor(Color.BLACK);
         g.setFont(new Font("arial", Font.PLAIN, fontSize));
         g.drawString(value, x + radio/2 - 4, y + radio + fontSize/2);
+        if(!active) {
+            g.setColor(new Color(192,192,192, 125));
+            g.fillOval(x, y, 2*radio, 2*radio);
+        }
     }
 
     public void setY(int y) {
@@ -110,6 +116,14 @@ public class ChipView {
         this.y = y;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public Object clone() {
         ChipView c = new ChipView(chip, fontSize);
@@ -119,8 +133,9 @@ public class ChipView {
     }
 
     public boolean contains(int x, int y) {
-        Rectangle r = new Rectangle(this.x+radio/2, this.y+radio/2, radio,
-                radio);
-        return r.contains(x, y);
+        int cX = this.x + radio;
+        int cY = this.y + radio;
+        double dist = Math.sqrt(Math.pow(cX - x, 2) + Math.pow(cY - y, 2));
+        return dist <= radio + 4;
     }
  }

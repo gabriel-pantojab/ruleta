@@ -34,7 +34,7 @@ public class BettingGridBoxView {
         g.setColor(color);
         g.fillOval(x+3, y+4, width-6, height-8);
         g.setColor(Color.WHITE);
-        BasicStroke wideStroke = new BasicStroke(2.0f);
+        BasicStroke wideStroke = new BasicStroke(4.0f);
         g.setStroke(wideStroke);
         g.drawRect(x, y, width, height);
         g.setFont(new Font("arial", Font.BOLD, 30));
@@ -49,21 +49,21 @@ public class BettingGridBoxView {
     }
 
     public boolean contains(int x, int y) {
-        Rectangle r = new Rectangle(this.x + 3, this.y + 3, width - 4,
-                height - 4);
+        Rectangle r = new Rectangle(this.x + 4, this.y + 4, width - 8,
+                height - 8);
         return r.contains(x, y);
     }
 
     public boolean clickBorder(int x, int y) {
-        boolean up = x >= this.x && x <= this.x + width && (y >= this.y - 2 && y
-                <= this.y + 1);
+        boolean up = x >= this.x && x <= this.x + width && (y >= this.y - 3 && y
+                <= this.y + 3);
         boolean down =
-                x >= this.x && x <= this.x + width && (y >= this.y + height - 2  && y
-                <= this.y + height + 1);
+                x >= this.x && x <= this.x + width && (y >= this.y + height - 3  && y
+                <= this.y + height + 3);
         boolean left =
-                y >= this.y && y <= this.y + height && x >= this.x - 2 && x <= this.x + 1;
+                y >= this.y && y <= this.y + height && x >= this.x - 3 && x <= this.x + 3;
         boolean right =
-                y >= this.y && y <= this.y + height && x >= this.x + width - 2 && x <= this.x + width + 1;
+                y >= this.y && y <= this.y + height && x >= this.x + width - 3 && x <= this.x + width + 3;
         return up || down || left || right;
     }
 

@@ -18,9 +18,11 @@ public class HandlerMouseEvent extends MouseAdapter {
         table.toBet(x, y);
         for(ChipView c : table.getChipsAvailable()) {
             if(c.contains(x, y)) {
+                table.setIndexCurrentChip(table.getChipsAvailable().indexOf(c));
                 table.setCurrentChip((ChipView) c.clone());
                 table.getCurrentChip().setRadio(17);
                 table.getCurrentChip().setFontSize(10);
+                table.getCurrentChip().setActive(true);
             }
         }
         table.repaint();
