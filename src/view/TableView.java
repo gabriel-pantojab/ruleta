@@ -14,6 +14,7 @@ public class TableView extends JPanel {
     private BettingGrid grid;
     private ArrayList<BettingGridBoxView> boxes;
     private ChipView currentChip;
+    private ChipContainer chipsAvailable;
     public TableView(BettingGrid grid) {
         setLayout(null);
         setBackground(new Color(2, 76, 20));
@@ -21,7 +22,10 @@ public class TableView extends JPanel {
         this.grid = grid;
         buildBoxes();
         setCursor(new Cursor(Cursor.HAND_CURSOR));
-        currentChip = new ChipView(Chip.FIVE, Color.BLUE);
+        currentChip = null;
+        chipsAvailable = new ChipContainer(this);
+        chipsAvailable.setBounds(0, 463, 1000, 100);
+        add(chipsAvailable);
     }
 
     public void setCurrentChip(ChipView currentChip) {
@@ -68,5 +72,9 @@ public class TableView extends JPanel {
 
     public void setLocationCurrentChip(int x, int y) {
         currentChip.setLocation(x - currentChip.getRadio(), y - currentChip.getRadio());
+    }
+
+    public void updateChipsAvailable(ArrayList<Chip> chips) {
+        chipsAvailable.updateChips(chips);
     }
 }

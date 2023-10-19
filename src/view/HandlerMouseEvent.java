@@ -23,7 +23,7 @@ public class HandlerMouseEvent extends MouseAdapter {
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        table.setLocationCurrentChip(x, y);
+        if(table.getCurrentChip() != null) table.setLocationCurrentChip(x, y);
         table.repaint();
     }
 }
