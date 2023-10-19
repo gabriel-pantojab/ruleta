@@ -15,9 +15,11 @@ public class TableView extends JPanel {
     private int indexCurrentChip;
     private ArrayList<ChipView> chipsAvailable;
 
+    private RouletteView roulette;
+
     public TableView(BettingGrid grid) {
         setLayout(null);
-        setBackground(new Color(2, 76, 20));
+        setBackground(new Color(3, 51, 6));
         boxes = new ArrayList<BettingGridBoxView>();
         this.grid = grid;
         buildBoxes();
@@ -25,6 +27,8 @@ public class TableView extends JPanel {
         currentChip = null;
         chipsAvailable = new ArrayList<ChipView>();
         indexCurrentChip = -1;
+        roulette = new RouletteView();
+        add(roulette);
     }
 
     public void setCurrentChip(ChipView currentChip) {
@@ -47,7 +51,7 @@ public class TableView extends JPanel {
                 int n = value.length();
                 String spaces = n < 2 ? " " : "";
                 BettingGridBoxView b2 =
-                        new BettingGridBoxView(j*Constants.WIDTH_GRID_BOX + 300,
+                        new BettingGridBoxView(j*Constants.WIDTH_GRID_BOX + 400,
                                 i*Constants.HEIGHT_GRID_BOX + 100,
                                 Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
                                 spaces + value, b.getColor().getColor());
@@ -60,8 +64,8 @@ public class TableView extends JPanel {
         super.paintComponent(g);
         for (BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
         if(currentChip != null) currentChip.paint((Graphics2D) g);
-        g.setColor(new Color(94, 62, 44));
-        g.fillRect(0, 463, 960, 100);
+        g.setColor(new Color(66, 66, 66));
+        g.fillRect(0, 463, 1200, 100);
         for (ChipView c : chipsAvailable) {
             c.setActive(chipsAvailable.indexOf(c) == indexCurrentChip);
             c.paint((Graphics2D) g);
