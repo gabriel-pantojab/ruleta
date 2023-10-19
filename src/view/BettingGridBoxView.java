@@ -12,6 +12,7 @@ public class BettingGridBoxView {
     private String value;
     private Color color;
     private ChipView lastChip;
+    private boolean select;
 
     public BettingGridBoxView(int x, int y, int width, int height,
                               String value, Color color) {
@@ -22,6 +23,7 @@ public class BettingGridBoxView {
         this.height = height;
         this.color = color;
         lastChip = null;
+        select = false;
     }
 
     public String getValue() {
@@ -37,6 +39,10 @@ public class BettingGridBoxView {
         g.drawRect(x, y, width, height);
         g.setFont(new Font("arial", Font.BOLD, 30));
         g.drawString(value, x + 7, y + height/2 + 12);
+        if(select) {
+            g.setColor(new Color(255, 254, 145, 150));
+            g.fillRect(x, y, width, height);
+        }
         if(lastChip != null) {
             lastChip.paint(g);
         }
@@ -75,5 +81,9 @@ public class BettingGridBoxView {
 
     public int getY() {
         return y;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
     }
 }
