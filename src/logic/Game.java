@@ -28,6 +28,8 @@ public class Game {
                 Chip.TEN,
                 Chip.FIFTY,
                 Chip.HUNDRED,
+                Chip.FIVE_HUNDRED,
+                Chip.ONE_THOUSAND,
                 Chip.TEN_THOUSAND,
                 Chip.HUNDRED_THOUSAND,
                 Chip.ONE_MILLION,
