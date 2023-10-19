@@ -25,7 +25,7 @@ public class ChipView {
         g.setColor(color);
         g.fillOval(x, y, 2 * radio, 2 * radio);
         g.setColor(Color.WHITE);
-        g.fillOval(x + 5, y + 5, 2 * radio - 10, 2 * radio - 10);
+        g.fillOval(x + radio/2, y + radio/2, radio, radio);
         g.drawOval(x, y, 2*radio, 2*radio);
         g.setColor(Color.BLACK);
         g.setFont(new Font("arial", Font.PLAIN, 17));
@@ -65,5 +65,11 @@ public class ChipView {
         ChipView c = new ChipView(chip, new Color(color.getRGB()));
         c.setLocation(x, y);
         return c;
+    }
+
+    public boolean contains(int x, int y) {
+        Rectangle r = new Rectangle(this.x+radio/2, this.y+radio/2, radio,
+                radio);
+        return r.contains(x, y);
     }
  }
