@@ -25,16 +25,7 @@ public class TableView extends JPanel {
         setBackground(new Color(3, 51, 6));
         boxes = new ArrayList<BoxElement>();
         betBoxes = new ArrayList<BetBox>();
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 278, Constants.WIDTH_GRID_BOX * 4, 50, " 1-12"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 278, Constants.WIDTH_GRID_BOX * 4, 50, "13-24"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 278, Constants.WIDTH_GRID_BOX * 4, 50, "25-36"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 328, Constants.WIDTH_GRID_BOX * 2, 50, " 1-18"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 2, 328, Constants.WIDTH_GRID_BOX * 2, 50, "EVEN"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.RED.getColor()));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 6, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.BLACK.getColor()));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "ODD"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 10, 328, Constants.WIDTH_GRID_BOX * 2, 50, "19-36"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "1st"));
+        buildBetBoxes();
         this.grid = grid;
         buildBoxes();
         setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -44,6 +35,18 @@ public class TableView extends JPanel {
         indexCurrentChip = -1;
         roulette = new RouletteView();
         add(roulette);
+    }
+
+    private void buildBetBoxes() {
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 278, Constants.WIDTH_GRID_BOX * 4, 50, " 1-12"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 278, Constants.WIDTH_GRID_BOX * 4, 50, "13-24"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 278, Constants.WIDTH_GRID_BOX * 4, 50, "25-36"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 328, Constants.WIDTH_GRID_BOX * 2, 50, " 1-18"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 2, 328, Constants.WIDTH_GRID_BOX * 2, 50, "EVEN"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.RED.getColor()));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 6, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.BLACK.getColor()));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "ODD"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 10, 328, Constants.WIDTH_GRID_BOX * 2, 50, "19-36"));
     }
 
     public ArrayList<BetBox> getBetBoxes() {
@@ -114,6 +117,16 @@ public class TableView extends JPanel {
                 ChipView c = (ChipView) currentChip.clone();
                 c.setActive(true);
                 chipsInBoxes.add(c);
+                ans = true;
+            }
+        }
+        for(BetBox b : betBoxes) {
+            if(b.contains(x, y)) {
+                b.setLastChip((ChipView) currentChip.clone());
+                b.getLastChip().setActive(true);
+                b.getLastChip().setRadio(17);
+                b.getLastChip().setLocation(b.getX() + b.getWidth() / 2 - 8,
+                        b.getY() + 7);
                 ans = true;
             }
         }

@@ -25,5 +25,8 @@ public class BetBox extends BoxElement{
         g.setStroke(wideStroke);
         g.drawRect(x, y, width, height);
         super.paint(g);
+        if(lastChip != null) {
+            lastChip.paint(g);
+        }
     }
 }
