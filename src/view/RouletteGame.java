@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,13 +11,14 @@ public class RouletteGame extends JFrame implements ActionListener {
     private JPanel mainPanel;
     public RouletteGame(TableView table) {
         mainPanel = new JPanel();
-        //router = Router.getInstance(this);
+        mainPanel.setLayout(new BorderLayout());
+        router = Router.getInstance(this);
         buildRoutes();
         currentRoute = "home";
         setTitle("Roulette 🙂🛞");
         setBounds(0, 0,1200, 600);
         add(mainPanel);
-        //mainPanel.add(router.getComponent(currentRoute));
+        mainPanel.add(router.getComponent(currentRoute), BorderLayout.CENTER);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -30,7 +32,9 @@ public class RouletteGame extends JFrame implements ActionListener {
 
     public void updateUI(){
         mainPanel.removeAll();
-        mainPanel.add(router.getComponent(router.getCurrentRoute()));
+        mainPanel.add(router.getComponent(router.getCurrentRoute()),
+                BorderLayout.CENTER);
+        mainPanel.updateUI();
     }
 
     @Override
