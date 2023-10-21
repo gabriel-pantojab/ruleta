@@ -12,15 +12,14 @@ public class RouletteGameComponent extends JPanel {
 
     public RouletteGameComponent() {
         try{
-            Router router = Router.getInstance(null);
+            Router router = Router.getInstance();
+            long balance = Long.parseLong(router.getParam("balance"));
             setLayout(new BorderLayout());
-            game = new Game(2500L);
+            game = new Game(balance);
             table = new TableView(game.getBettingGrid());
             control = new ControlGame(game, table);
+            table.updateChipsAvailable(game.getChipsAvailable());
             add(table, BorderLayout.CENTER);
-            JButton b = new JButton("Home");
-            //add(b, BorderLayout.NORTH);
-            b.addActionListener(e -> router.setCurrentRoute("home"));
         }catch (Exception e){
             System.out.println("error" + e);
         }

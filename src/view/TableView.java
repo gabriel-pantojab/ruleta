@@ -19,10 +19,15 @@ public class TableView extends JPanel {
     private RouletteView roulette;
     private ArrayList<ChipView> chipsInBoxes;
     private ArrayList<BetBox> betBoxes;
+    private JButton home;
 
     public TableView(BettingGrid grid) {
+        Router router = Router.getInstance();
         setLayout(null);
         setBackground(new Color(3, 51, 6));
+        home = new JButton("Home");
+        home.setBounds(1105, 10, 70, 30);
+        home.addActionListener(e -> router.navigate("home"));
         boxes = new ArrayList<BoxElement>();
         betBoxes = new ArrayList<BetBox>();
         buildBetBoxes();
@@ -35,6 +40,7 @@ public class TableView extends JPanel {
         indexCurrentChip = -1;
         roulette = new RouletteView();
         add(roulette);
+        add(home);
     }
 
     private void buildBetBoxes() {

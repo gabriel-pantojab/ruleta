@@ -9,7 +9,7 @@ public class RouletteGame extends JFrame implements ActionListener {
     private Router router;
     private String currentRoute;
     private JPanel mainPanel;
-    public RouletteGame(TableView table) {
+    public RouletteGame() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         router = Router.getInstance(this);
@@ -26,8 +26,8 @@ public class RouletteGame extends JFrame implements ActionListener {
     }
 
     private void buildRoutes() {
-        router.addRoute("home", new HomeComponent());
-        router.addRoute("game-roulette", new RouletteGameComponent());
+        router.addRoute("home", HomeComponent.class);
+        router.addRoute("game-roulette", RouletteGameComponent.class);
     }
 
     public void updateUI(){

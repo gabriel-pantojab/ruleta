@@ -10,11 +10,10 @@ public class HomeComponent extends JPanel {
     private Router router;
     public HomeComponent() {
         game = new JButton("Play");
-        JLabel love = new JLabel("Hola Mi Amooooooor :3");
-        love.setFont(new Font("arial", Font.BOLD, 30));
-        add(love);
         router = Router.getInstance(null);
-        game.addActionListener(e -> router.setCurrentRoute("game-roulette"));
+        game.addActionListener(e -> {
+            router.navigate("game-roulette", "balance", "25000");
+        });
         add(game);
     }
 
