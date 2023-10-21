@@ -10,9 +10,11 @@ public class HomeComponent extends JPanel {
     private Router router;
     public HomeComponent() {
         game = new JButton("Play");
-        router = Router.getInstance(null);
+        router = Router.getInstance();
         game.addActionListener(e -> {
-            router.navigate("game-roulette", "balance", "25000");
+            String balance = JOptionPane.showInputDialog("Ingrese el monto " +
+                    "inicial");
+            router.navigate("game-roulette", "balance", balance);
         });
         add(game);
     }
