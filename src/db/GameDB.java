@@ -70,7 +70,7 @@ public class GameDB {
         }
     }
 
-    public int selectGame(int totalWinAmount, int totalLostAmount, String nickname){
+    public int selectIDGame(int totalWinAmount, int totalLostAmount, String nickname){
         try{
             Connection connection = conexion.connect();
             ps = connection.prepareStatement("SELECT idgame FROM game WHERE totalWinAmount = ? AND totalLostAmount = ? AND user_id=(SELECT iduser FROM user WHERE nickname = ?);");
@@ -103,18 +103,62 @@ public class GameDB {
         }
     }
 
-    public void update(int balance, int totalWinAmount, int totalLostAmoutn, int idgame){
+    public int selectWinAmountGame(int idgame) {
         try {
             Connection connection = conexion.connect();
-            ps = connection.prepareStatement("UPDATE game set balance = ?, totalWinAmount = ?, totalLostAmount = ?  WHERE idgame = ?");
-            ps.setInt(1, balance);
-            ps.setInt(2, totalWinAmount);
-            ps.setInt(3, totalLostAmoutn);
-            ps.setInt(4, idgame);
+            ps = connection.prepareStatement("SELECT totalWinAmount FROM game WHERE idgame = ? ");
+            ps.setInt(1, idgame);
+            rs = ps.executeQuery();
+            rs.next();
+            int res = rs.getInt(1);
+            conexion.closeConnection();
+            return res;
+        } catch (Exception e) {
+            System.out.println("No se pudo seleccionar todos los datos " + e);
+        }
+        return 0;
+    }
+
+    public int selectLostAmountGame(int idgame) {
+        try {
+            Connection connection = conexion.connect();
+            ps = connection.prepareStatement("SELECT totalLostAmount FROM game WHERE idgame = ? ");
+            ps.setInt(1, idgame);
+            rs = ps.executeQuery();
+            rs.next();
+            int res = rs.getInt(1);
+            conexion.closeConnection();
+            return res;
+        } catch (Exception e) {
+            System.out.println("No se pudo seleccionar todos los datos " + e);
+        }
+        return 0;
+    }
+
+    public void update(int totalWinAmount, int totalLostAmoutn, int idgame){
+        try {
+            Connection connection = conexion.connect();
+            ps = connection.prepareStatement("UPDATE game set totalWinAmount = ?, totalLostAmount = ?  WHERE idgame = ?");
+            ps.setInt(1, totalWinAmount);
+            ps.setInt(2, totalLostAmoutn);
+            ps.setInt(3, idgame);
             ps.executeUpdate();
             conexion.closeConnection();
         }catch (Exception e){
             System.out.println("No se pudo actualizar la partida. " + e);
+        }
+    }
+
+    public void updateBalance(int balance, int idgame){
+        try {
+            Connection connection = conexion.connect();
+            ps = connection.prepareStatement("UPDATE game set balance = ?  WHERE idgame = ?");
+            ps.setInt(1, balance);
+            ps.setInt(2, idgame);
+            ps.executeUpdate();
+            conexion.closeConnection();
+        }catch (Exception e){
+            System.out.println("No se pudo actualizar el balance de la partida. " + e);
         }
     }
 
