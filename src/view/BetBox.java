@@ -21,7 +21,7 @@ public class BetBox extends BoxElement{
         g.setColor(Color.WHITE);
         g.setFont(new Font("arial", Font.BOLD, 26));
         g.drawString(value, x + width / 6, y + height / 2 + 9);
-        BasicStroke wideStroke = new BasicStroke(4.0f);
+        BasicStroke wideStroke = new BasicStroke(6.0f);
         g.setStroke(wideStroke);
         g.drawRect(x, y, width, height);
         super.paint(g);

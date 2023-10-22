@@ -63,6 +63,11 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                 try{
                     Thread.sleep(6500);
                     table.getSpinButton().setEnabled(true);
+                    Pocket pocket = game.spinRoulette();
+                    JOptionPane.showMessageDialog(null, pocket.getValue());
+                    long winAmount = game.getWinAmount(pocket);
+                    game.updateBalance(winAmount);
+                    table.setBalanceLabel(game.getBalance()+"");
                 }catch (Exception ignored){}
             });
             r.start();

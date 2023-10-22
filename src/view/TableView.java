@@ -18,6 +18,8 @@ public class TableView extends JPanel {
     private ArrayList<BetBox> betBoxes;
 
     private JButton spinButton;
+    private JLabel balanceLabel;
+    private JLabel totalBetLabel;
 
     public TableView(BettingGrid grid) {
         setLayout(null);
@@ -33,10 +35,24 @@ public class TableView extends JPanel {
         chipsInBoxes = new ArrayList<ChipView>();
         indexCurrentChip = -1;
         roulette = new RouletteView();
+
         spinButton = new JButton("SPIN");
-        spinButton.setBounds(350, 400, 70, 30);
+        spinButton.setBounds(400, 400, 70, 30);
+
+        balanceLabel = new JLabel("Balance: ");
+        balanceLabel.setFont(new Font("arial", Font.BOLD, 20));
+        balanceLabel.setBounds(400, 30, 200, 30);
+        balanceLabel.setForeground(Color.WHITE);
+
+        totalBetLabel = new JLabel("Total bet: ");
+        totalBetLabel.setFont(new Font("arial", Font.BOLD, 20));
+        totalBetLabel.setBounds(600, 30, 200, 30);
+        totalBetLabel.setForeground(Color.WHITE);
+
         add(roulette);
         add(spinButton);
+        add(balanceLabel);
+        add(totalBetLabel);
     }
 
     private void buildBetBoxes() {
@@ -57,6 +73,10 @@ public class TableView extends JPanel {
 
     public void spinRoulette() {
         roulette.spin();
+    }
+
+    public void setBalanceLabel(String newBalance) {
+        balanceLabel.setText("Balance: "+newBalance);
     }
 
     public ArrayList<BetBox> getBetBoxes() {
@@ -103,7 +123,7 @@ public class TableView extends JPanel {
         for (BoxElement b : boxes) b.paint((Graphics2D) g);
         for(BetBox b : betBoxes) b.paint((Graphics2D) g);
         for(ChipView c : chipsInBoxes) c.paint((Graphics2D) g);
-        if(currentChip != null) currentChip.paint((Graphics2D) g);
+        //if(currentChip != null) currentChip.paint((Graphics2D) g);
         g.setColor(new Color(66, 66, 66));
         g.fillRect(0, 463, 1200, 100);
         for (ChipView c : chipsAvailable) {
@@ -123,7 +143,7 @@ public class TableView extends JPanel {
                 b.getLastChip().setLocation(b.getX() + 6, b.getY() + 13);
                 //ans = new UniqueBet(b.);
                 break;
-            }else if(b.clickBottomBorder(x, y)) {
+            }else if(b.clickBorder(x, y)) {
                 ChipView c = (ChipView) currentChip.clone();
                 c.setActive(true);
                 chipsInBoxes.add(c);

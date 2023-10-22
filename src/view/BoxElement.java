@@ -76,8 +76,8 @@ public class BoxElement {
     }
 
     public boolean contains(int x, int y) {
-        Rectangle r = new Rectangle(this.x + 4, this.y + 4, width - 8,
-                height - 8);
+        Rectangle r = new Rectangle(this.x + 6, this.y + 6, width - 12,
+                height - 12);
         return r.contains(x, y);
     }
 
@@ -90,21 +90,21 @@ public class BoxElement {
     }
 
     public boolean clickTopBorder(int x, int y) {
-        return x >= this.x && x <= this.x + width && (y >= this.y - 3 && y
-                <= this.y + 3);
+        return x >= this.x && x <= this.x + width && (y >= this.y - 6 && y
+                <= this.y + 6);
     }
 
     public boolean clickBottomBorder(int x, int  y) {
-        return x >= this.x && x <= this.x + width && (y >= this.y + height - 3  && y
-                <= this.y + height + 3);
+        return x >= this.x && x <= this.x + width && (y >= this.y + height - 6  && y
+                <= this.y + height + 6);
     }
 
     public boolean clickLeftBorder(int x, int  y) {
-        return y >= this.y && y <= this.y + height && x >= this.x - 3 && x <= this.x + 3;
+        return y >= this.y && y <= this.y + height && x >= this.x - 6 && x <= this.x + 6;
     }
 
     public boolean clickRightBorder(int x, int y) {
-        return y >= this.y && y <= this.y + height && x >= this.x + width - 3 && x <= this.x + width + 3;
+        return y >= this.y && y <= this.y + height && x >= this.x + width - 6 && x <= this.x + width + 6;
     }
 
     public void paint(Graphics2D g) {

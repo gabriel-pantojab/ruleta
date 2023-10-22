@@ -16,6 +16,7 @@ public class Main {
             TableView table = new TableView(game.getBettingGrid());
             ControlGame control = new ControlGame(game, table);
             table.updateChipsAvailable(game.getChipsAvailable());
+            table.setBalanceLabel(game.getBalance()+"");
             new RouletteGame(table);
         }catch (Exception e){}
     }

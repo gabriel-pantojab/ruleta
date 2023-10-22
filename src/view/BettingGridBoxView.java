@@ -17,13 +17,13 @@ public class BettingGridBoxView extends BoxElement {
 
     public void paint(Graphics2D g) {
         g.setColor(color);
-        g.fillOval(x+3, y+4, width-6, height-8);
+        g.fillOval(x+5, y+6, width-9, height-11);
         g.setColor(Color.WHITE);
-        BasicStroke wideStroke = new BasicStroke(4.0f);
+        BasicStroke wideStroke = new BasicStroke(6.0f);
         g.setStroke(wideStroke);
         g.drawRect(x, y, width, height);
-        g.setFont(new Font("arial", Font.BOLD, 30));
-        g.drawString(value, x + 7, y + height/2 + 12);
+        g.setFont(new Font("arial", Font.BOLD, 25));
+        g.drawString(value, x + 9, y + height/2 + 12);
         super.paint(g);
         if(lastChip != null) {
             lastChip.paint(g);
