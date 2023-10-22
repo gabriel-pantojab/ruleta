@@ -10,6 +10,6 @@ public class ControlGame {
     public ControlGame(Game game, TableView table) {
         this.game = game;
         this.table = table;
-        handlerMouseEvent = new HandlerMouseEvent(table);
+        handlerMouseEvent = new HandlerMouseEvent(table, game);
     }
 }

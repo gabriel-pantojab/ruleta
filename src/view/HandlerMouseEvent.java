@@ -1,14 +1,23 @@
 package view;
 
+import logic.Game;
+import logic.Pocket;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class HandlerMouseEvent extends MouseAdapter {
+public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     private TableView table;
-    public HandlerMouseEvent(TableView table) {
+    private Game game;
+    public HandlerMouseEvent(TableView table, Game game) {
         this.table = table;
         this.table.addMouseListener(this);
         this.table.addMouseMotionListener(this);
+        this.table.getSpinButton().addActionListener(this);
+        this.game = game;
     }
 
     @Override
@@ -42,5 +51,21 @@ public class HandlerMouseEvent extends MouseAdapter {
             table.setLocationCurrentChip(x, y);
         }
         table.repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object s = e.getSource();
+        if(s.equals(table.getSpinButton())) {
+            Thread r = new Thread(() -> {
+                table.spinRoulette();
+                table.getSpinButton().setEnabled(false);
+                try{
+                    Thread.sleep(6500);
+                    table.getSpinButton().setEnabled(true);
+                }catch (Exception ignored){}
+            });
+            r.start();
+        }
     }
 }
