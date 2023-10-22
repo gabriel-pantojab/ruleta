@@ -21,6 +21,10 @@ public class RoundDB {
             ps.setInt(3,lostAmount);
             ps.setInt(4,idgame);
             ps.executeUpdate();
+            GameDB gameDB = new GameDB();
+            int win = gameDB.selectWinAmountGame(idgame) + winAmount;
+            int lost = gameDB.selectLostAmountGame(idgame) + lostAmount;
+            gameDB.update(win,lost,idgame);
             conexion.closeConnection();
         }catch (Exception e){
             System.out.println("No se pudo insertar la ronda " + e);
