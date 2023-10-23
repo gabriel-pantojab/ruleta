@@ -10,6 +10,8 @@ public class ControlGame {
     public ControlGame(Game game, TableView table) {
         this.game = game;
         this.table = table;
+        this.table.updateChipsAvailable(game.getChipsAvailable());
+        this.table.setBalanceLabel(game.getBalance()+"");
         handlerMouseEvent = new HandlerMouseEvent(table, game);
     }
 }

@@ -12,12 +12,7 @@ import java.util.function.Function;
 public class Main {
     public static void main(String[] args) {
         try{
-            Game game = new Game(2500L);
-            TableView table = new TableView(game.getBettingGrid());
-            ControlGame control = new ControlGame(game, table);
-            table.updateChipsAvailable(game.getChipsAvailable());
-            table.setBalanceLabel(game.getBalance()+"");
-            new RouletteGame(table);
+            new RouletteGame();
         }catch (Exception e){}
     }
 }
