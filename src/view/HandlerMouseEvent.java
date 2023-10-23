@@ -15,7 +15,9 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     private TableView table;
     private Game game;
     private boolean run;
+    private Router router;
     public HandlerMouseEvent(TableView table, Game game) {
+        router = Router.getInstance();
         this.table = table;
         this.table.addMouseListener(this);
         this.table.addMouseMotionListener(this);
@@ -104,6 +106,10 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                     table.setTotalBetLabel("0");
                     table.clearGrid();
                     game.createNewRound();
+                    if(game.getBalance() == 0) {
+                        JOptionPane.showMessageDialog(null,"GAME OVER");
+                        router.navigate("home");
+                    }
                     table.repaint();
                     run = false;
                 }catch (Exception ignored){}
