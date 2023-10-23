@@ -6,14 +6,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserDB {
+public class UserService {
     Conexion conexion = Conexion.getInstance();
     private PreparedStatement ps;
     private ResultSet rs;
+    public static UserService userdb;
 
-    public UserDB(){
+    private UserService(){
         ps = null;
         rs = null;
+    }
+
+    public static UserService getInstance() {
+        if(userdb == null) {
+            userdb = new UserService();
+        }
+        return userdb;
     }
     public void insert(User user){
         try {

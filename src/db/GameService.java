@@ -5,14 +5,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class GameDB {
+public class GameService {
     Conexion conexion = Conexion.getInstance();
     private PreparedStatement ps;
     private ResultSet rs;
+    public static GameService gameService;
 
-    public GameDB(){
+    private GameService(){
     }
 
+    public static GameService getInstance() {
+        if(gameService == null) {
+            gameService = new GameService();
+        }
+        return gameService;
+    }
     public void insert(Game game, int idUser, int totalWinAmount, int totalLostAmount){
         try {
             Connection connection = conexion.connect();
