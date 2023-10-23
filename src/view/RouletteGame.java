@@ -5,16 +5,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RouletteGame extends JFrame implements ActionListener {
+public class RouletteGame extends JFrame {
     private Router router;
     private String currentRoute;
     private JPanel mainPanel;
+    public static boolean user;
     public RouletteGame() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         router = Router.getInstance(this);
         buildRoutes();
         currentRoute = "home";
+
+        user = false;
+
         setTitle("Roulette 🙂🛞");
         setBounds(0, 0,1200, 600);
         add(mainPanel);
@@ -36,10 +40,5 @@ public class RouletteGame extends JFrame implements ActionListener {
         mainPanel.add(router.getComponent(router.getCurrentRoute()),
                 BorderLayout.CENTER);
         mainPanel.updateUI();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }
