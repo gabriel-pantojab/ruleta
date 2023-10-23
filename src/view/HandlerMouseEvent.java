@@ -20,6 +20,7 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         this.table.addMouseListener(this);
         this.table.addMouseMotionListener(this);
         this.table.getSpinButton().addActionListener(this);
+        this.table.getClearGridButton().addActionListener(this);
         this.game = game;
         this.run = false;
     }
@@ -34,8 +35,10 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
             boolean success = game.toBetInRound(bet);
             if(success) {
                 table.getSpinButton().setEnabled(true);
+                table.getClearGridButton().setEnabled(true);
                 table.setBalanceLabel(game.getBalance()+"");
                 table.setTotalBetLabel(game.getCurrentRound().getTotalBet()+"");
+                table.updateChipsAvailable(game.getChipsAvailable());
             }
         }
         for(ChipView c : table.getChipsAvailable()) {
@@ -106,6 +109,17 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                 }catch (Exception ignored){}
             });
             r.start();
+        }else if(s.equals(table.getClearGridButton())) {
+            table.clearGrid();
+            table.setIndexCurrentChip(-1);
+            table.setCurrentChip(null);
+            game.resetRound();
+            table.setBalanceLabel(game.getBalance()+"");
+            table.setTotalBetLabel("0");
+            table.getClearGridButton().setEnabled(false);
+            table.getSpinButton().setEnabled(false);
+            table.updateChipsAvailable(game.getChipsAvailable());
+            table.repaint();
         }
     }
 }

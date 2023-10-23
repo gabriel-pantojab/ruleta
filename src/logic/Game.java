@@ -37,16 +37,8 @@ public class Game {
                 Chip.HUNDRED_MILLION,
                 Chip.ONE_BILLION
         };
-        createChipsAvailable(balance);
+        updateChips();
         createNewRound();
-    }
-
-    private void createChipsAvailable(long balance) {
-        for (Chip chip : orderedChips) {
-            if (chip.getValue() <= balance) {
-                chipsAvailable.add(chip);
-            }
-        }
     }
 
     public void createNewRound(){
@@ -89,16 +81,11 @@ public class Game {
     }
 
     private void updateChips() {
-        int index = chipsAvailable.size() - 1;
-        Chip max = chipsAvailable.get(index);
-        if(max.getValue() <= balance) {
-            for(int i = index + 1; i < orderedChips.length; i++) {
-                if (orderedChips[i].getValue() <= balance) {
-                    chipsAvailable.add(orderedChips[i]);
-                }
+        chipsAvailable.clear();
+        for (Chip chip : orderedChips) {
+            if (chip.getValue() <= balance) {
+                chipsAvailable.add(chip);
             }
-        }else {
-            chipsAvailable.remove(index);
         }
     }
 
@@ -124,5 +111,12 @@ public class Game {
 
     public BettingGrid getBettingGrid() {
         return bettingGrid;
+    }
+
+    public void resetRound() {
+        long totalBet = currentRound.getTotalBet();
+        updateBalance(totalBet);
+        rounds.pop();
+        createNewRound();
     }
 }

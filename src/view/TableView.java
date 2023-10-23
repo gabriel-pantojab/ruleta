@@ -19,6 +19,7 @@ public class TableView extends JPanel {
     private ArrayList<BetBox> betBoxes;
 
     private JButton spinButton;
+    private JButton clearGridButton;
     private JLabel balanceLabel;
     private JLabel totalBetLabel;
 
@@ -41,20 +42,25 @@ public class TableView extends JPanel {
         spinButton.setBounds(400, 400, 70, 30);
         spinButton.setEnabled(false);
 
+        clearGridButton = new JButton("Clear");
+        clearGridButton.setBounds(500, 400, 70, 30);
+        clearGridButton.setEnabled(false);
+
         balanceLabel = new JLabel("Balance: ");
         balanceLabel.setFont(new Font("arial", Font.BOLD, 20));
-        balanceLabel.setBounds(400, 30, 200, 30);
+        balanceLabel.setBounds(400, 30, 300, 30);
         balanceLabel.setForeground(Color.WHITE);
 
         totalBetLabel = new JLabel("Total bet: 0");
         totalBetLabel.setFont(new Font("arial", Font.BOLD, 20));
-        totalBetLabel.setBounds(600, 30, 200, 30);
+        totalBetLabel.setBounds(750, 30, 300, 30);
         totalBetLabel.setForeground(Color.WHITE);
 
         add(roulette);
         add(spinButton);
         add(balanceLabel);
         add(totalBetLabel);
+        add(clearGridButton);
     }
 
     private void buildBetBoxes() {
@@ -82,6 +88,10 @@ public class TableView extends JPanel {
 
     public JButton getSpinButton() {
         return spinButton;
+    }
+
+    public JButton getClearGridButton() {
+        return clearGridButton;
     }
 
     public void spinRoulette() {
