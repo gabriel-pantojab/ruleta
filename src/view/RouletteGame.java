@@ -28,6 +28,7 @@ public class RouletteGame extends JFrame implements ActionListener {
     private void buildRoutes() {
         router.addRoute("home", HomeComponent.class);
         router.addRoute("game-roulette", RouletteGameComponent.class);
+        router.addRoute("history", HistoryComponent.class);
     }
 
     public void updateUI(){

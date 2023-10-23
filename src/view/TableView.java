@@ -22,8 +22,12 @@ public class TableView extends JPanel {
     private JButton clearGridButton;
     private JLabel balanceLabel;
     private JLabel totalBetLabel;
+    private JButton goHome;
+
+    private Router router;
 
     public TableView(BettingGrid grid) {
+        router = Router.getInstance();
         setLayout(null);
         setBackground(new Color(3, 51, 6));
         boxes = new ArrayList<BettingGridBoxView>();
@@ -56,11 +60,18 @@ public class TableView extends JPanel {
         totalBetLabel.setBounds(750, 30, 300, 30);
         totalBetLabel.setForeground(Color.WHITE);
 
+        goHome = new JButton("Home");
+        goHome.setBounds(1100, 30, 70, 30);
+        goHome.addActionListener(e->{
+            router.navigate("home");
+        });
+
         add(roulette);
         add(spinButton);
         add(balanceLabel);
         add(totalBetLabel);
         add(clearGridButton);
+        add(goHome);
     }
 
     private void buildBetBoxes() {
