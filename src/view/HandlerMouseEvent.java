@@ -1,5 +1,6 @@
 package view;
 
+import logic.Bet;
 import logic.Game;
 import logic.Pocket;
 
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     private TableView table;
@@ -24,7 +26,8 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        table.toBet(x, y);
+        Bet bet = table.toBet(x, y);
+        game.toBetInRound(bet);
         for(ChipView c : table.getChipsAvailable()) {
             if(c.contains(x, y)) {
                 table.setIndexCurrentChip(table.getChipsAvailable().indexOf(c));
@@ -41,15 +44,23 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
+        ArrayList<Integer> indexs = new ArrayList<Integer>();
         if(table.getCurrentChip() != null) {
-            for(BoxElement b : table.getBoxes()) {
-                b.setSelect(b.contains(x, y) || b.clickBorder(x, y));
+            for(BettingGridBoxView b : table.getBoxes()) {
+                if(b.clickBottomBorder(x, y) || b.clickTopBorder(x, y)) {
+                    String type = table.getTypeBet(x, y).getType();
+                    if(type.equals("line") || type.equals("street")) {
+                        int v = Integer.parseInt(b.getValue().trim());
+                        indexs.add(v);
+                    }else b.setSelect(b.clickBorder(x, y));
+                }else b.setSelect(b.contains(x, y) || b.clickBorder(x, y));
             }
             for(BetBox b : table.getBetBoxes()) {
                 b.setSelect(b.contains(x, y));
             }
             table.setLocationCurrentChip(x, y);
         }
+        table.selectBoxes(indexs);
         table.repaint();
     }
 

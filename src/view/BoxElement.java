@@ -100,11 +100,11 @@ public class BoxElement {
     }
 
     public boolean clickLeftBorder(int x, int  y) {
-        return y >= this.y && y <= this.y + height && x >= this.x - 6 && x <= this.x + 6;
+        return y >= this.y + 26 && y <= this.y + height - 26 && x >= this.x - 6 && x <= this.x + 6;
     }
 
     public boolean clickRightBorder(int x, int y) {
-        return y >= this.y && y <= this.y + height && x >= this.x + width - 6 && x <= this.x + width + 6;
+        return y >= this.y + 26 && y <= this.y + height - 26 && x >= this.x + width - 6 && x <= this.x + width + 6;
     }
 
     public void paint(Graphics2D g) {

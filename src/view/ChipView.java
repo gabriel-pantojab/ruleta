@@ -138,4 +138,8 @@ public class ChipView {
         double dist = Math.sqrt(Math.pow(cX - x, 2) + Math.pow(cY - y, 2));
         return dist <= radio + 4;
     }
+
+    public Chip getChip() {
+        return chip;
+    }
  }
