@@ -58,24 +58,26 @@ public class TableView extends JPanel {
     }
 
     private void buildBetBoxes() {
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 278, Constants.WIDTH_GRID_BOX * 4, 50, " 1-12"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 278, Constants.WIDTH_GRID_BOX * 4, 50, "13-24"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 278, Constants.WIDTH_GRID_BOX * 4, 50, "25-36"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 328, Constants.WIDTH_GRID_BOX * 2, 50, " 1-18"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 2, 328, Constants.WIDTH_GRID_BOX * 2, 50, "EVEN"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.RED.getColor()));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 6, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.BLACK.getColor()));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "ODD"));
-        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 10, 328, Constants.WIDTH_GRID_BOX * 2, 50, "19-36"));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 278,
+                Constants.WIDTH_GRID_BOX * 4, 50, " 1-12", FirstDozenRange.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 278, Constants.WIDTH_GRID_BOX * 4, 50, "13-24", SecondDozenRange.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 278, Constants.WIDTH_GRID_BOX * 4, 50, "25-36", ThirdDozenRange.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX, 328,
+                Constants.WIDTH_GRID_BOX * 2, 50, " 1-18", FirstSemesterRange.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 2, 328, Constants.WIDTH_GRID_BOX * 2, 50, "EVEN", EvenConditional.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 4, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.RED.getColor(), RedColor.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 6, 328, Constants.WIDTH_GRID_BOX * 2, 50, "", ValueColor.BLACK.getColor(), BlackColor.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 8, 328, Constants.WIDTH_GRID_BOX * 2, 50, "ODD", OddConditional.class));
+        betBoxes.add(new BetBox(450 + Constants.WIDTH_GRID_BOX + Constants.WIDTH_GRID_BOX * 10, 328, Constants.WIDTH_GRID_BOX * 2, 50, "19-36", SecondDozenRange.class));
         betBoxes.add(new BetBox(1061, 100,
                 Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
-                " 3°"));
+                " 3°", ThirdColumnSet.class));
         betBoxes.add(new BetBox(1061, 159,
                 Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
-                " 2°"));
+                " 2°", SecondColumnSet.class));
         betBoxes.add(new BetBox(1061, 218,
                 Constants.WIDTH_GRID_BOX, Constants.HEIGHT_GRID_BOX,
-                " 3°"));
+                " 1°", FirstColumnSet.class));
     }
 
     public JButton getSpinButton() {
@@ -252,6 +254,7 @@ public class TableView extends JPanel {
                 b.getLastChip().setRadio(17);
                 b.getLastChip().setLocation(b.getX() + b.getWidth() / 2 - 8,
                         b.getY() + 7);
+                ans = b.getBet(currentChip.getChip());
             }
         }
         return ans;

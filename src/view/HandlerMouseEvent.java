@@ -27,7 +27,7 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         int x = e.getX();
         int y = e.getY();
         Bet bet = table.toBet(x, y);
-        game.toBetInRound(bet);
+        if(bet != null) game.toBetInRound(bet);
         for(ChipView c : table.getChipsAvailable()) {
             if(c.contains(x, y)) {
                 table.setIndexCurrentChip(table.getChipsAvailable().indexOf(c));

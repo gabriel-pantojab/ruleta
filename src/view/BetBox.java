@@ -1,17 +1,36 @@
 package view;
 
+import logic.Bet;
+import logic.Chip;
+
 import java.awt.*;
+import java.lang.reflect.Constructor;
 
 public class BetBox extends BoxElement{
     private String value;
-    public BetBox(int x, int y, int width, int height, String value) {
+    private Class<? extends Bet> bet;
+    public BetBox(int x, int y, int width, int height, String value,
+                  Class<? extends Bet> bet) {
         super(x, y, width, height, new Color(3, 51, 6));
         this.value = value;
+        this.bet = bet;
     }
 
-    public BetBox(int x, int y, int width, int height, String value, Color color) {
+    public BetBox(int x, int y, int width, int height, String value,
+                  Color color, Class<? extends Bet> bet) {
         super(x, y, width, height, color);
         this.value = value;
+        this.bet = bet;
+    }
+
+    public Bet getBet(Chip chip) {
+        Bet b = null;
+        try {
+            Constructor<? extends Bet> c = bet.getConstructor(Chip.class);
+            b = c.newInstance(chip);
+        }catch (Exception ignored) {
+        }
+        return  b;
     }
 
     @Override
