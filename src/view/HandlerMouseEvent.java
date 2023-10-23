@@ -14,20 +14,29 @@ import java.util.ArrayList;
 public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     private TableView table;
     private Game game;
+    private boolean run;
     public HandlerMouseEvent(TableView table, Game game) {
         this.table = table;
         this.table.addMouseListener(this);
         this.table.addMouseMotionListener(this);
         this.table.getSpinButton().addActionListener(this);
         this.game = game;
+        this.run = false;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(run) return;
         int x = e.getX();
         int y = e.getY();
         Bet bet = table.toBet(x, y);
-        if(bet != null) game.toBetInRound(bet);
+        if(bet != null) {
+            boolean success = game.toBetInRound(bet);
+            if(success) {
+                table.getSpinButton().setEnabled(true);
+            }
+            table.setBalanceLabel(game.getBalance()+"");
+        }
         for(ChipView c : table.getChipsAvailable()) {
             if(c.contains(x, y)) {
                 table.setIndexCurrentChip(table.getChipsAvailable().indexOf(c));
@@ -42,6 +51,7 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if(run) return;
         int x = e.getX();
         int y = e.getY();
         ArrayList<Integer> indexs = new ArrayList<Integer>();
@@ -69,16 +79,23 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         Object s = e.getSource();
         if(s.equals(table.getSpinButton())) {
             Thread r = new Thread(() -> {
+                run = true;
+                table.setIndexCurrentChip(-1);
+                table.repaint();
+                table.setCurrentChip(null);
                 table.spinRoulette();
                 table.getSpinButton().setEnabled(false);
                 try{
                     Thread.sleep(6500);
                     table.getSpinButton().setEnabled(true);
                     Pocket pocket = game.spinRoulette();
-                    JOptionPane.showMessageDialog(null, pocket.getValue());
+                    JOptionPane.showMessageDialog(null,
+                            pocket.getColor() +": "+ pocket.getValue());
                     long winAmount = game.getWinAmount(pocket);
                     game.updateBalance(winAmount);
+                    table.updateChipsAvailable(game.getChipsAvailable());
                     table.setBalanceLabel(game.getBalance()+"");
+                    run = false;
                 }catch (Exception ignored){}
             });
             r.start();

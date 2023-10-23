@@ -14,7 +14,6 @@ public class TableView extends JPanel {
     private ChipView currentChip;
     private int indexCurrentChip;
     private ArrayList<ChipView> chipsAvailable;
-
     private RouletteView roulette;
     private ArrayList<ChipView> chipsInBoxes;
     private ArrayList<BetBox> betBoxes;
@@ -40,6 +39,7 @@ public class TableView extends JPanel {
 
         spinButton = new JButton("SPIN");
         spinButton.setBounds(400, 400, 70, 30);
+        spinButton.setEnabled(false);
 
         balanceLabel = new JLabel("Balance: ");
         balanceLabel.setFont(new Font("arial", Font.BOLD, 20));
@@ -131,9 +131,7 @@ public class TableView extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for(int i = 0; i < 13; i++) boxes.get(i).paint((Graphics2D) g);
-        for(int i = 27; i < 39; i++) boxes.get(i).paint((Graphics2D) g);
-        for(int i = 13; i < 27; i++) boxes.get(i).paint((Graphics2D) g);
+        for(BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
         for(BetBox b : betBoxes) b.paint((Graphics2D) g);
         for(ChipView c : chipsInBoxes) c.paint((Graphics2D) g);
         //if(currentChip != null) currentChip.paint((Graphics2D) g);
@@ -284,5 +282,10 @@ public class TableView extends JPanel {
 
     public ArrayList<BettingGridBoxView> getBoxes() {
         return boxes;
+    }
+
+    public void disableAllChips() {
+        for(ChipView c : chipsAvailable) c.setActive(false);
+        repaint();
     }
 }
