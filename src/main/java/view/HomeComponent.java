@@ -1,7 +1,12 @@
 package view;
 
+import db.UserService;
+import logic.User;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class HomeComponent extends JPanel {
@@ -11,9 +16,11 @@ public class HomeComponent extends JPanel {
     private JButton auth;
     private JButton signUp;
     private JLabel nickName;
+    private UserService userService;
 
 
     public HomeComponent() {
+        userService = UserService.getInstance();
         setLayout(null);
         router = Router.getInstance();
         game = new JButton("Play");
@@ -27,15 +34,14 @@ public class HomeComponent extends JPanel {
             router.navigate("history");
         });
 
-        String texgAuth = RouletteGame.user ? "Logout" : "SignIn";
-        auth = new JButton(texgAuth);
+        auth = new JButton("SignIn");
         auth.addActionListener(e -> {
-            if(!RouletteGame.user) {
+            if(RouletteGame.user.getNickname() == null) {
                 showRegistrationDialog();
             }else {
-                //salir
                 JOptionPane.showMessageDialog(null, "Thanks, come back soon");
-                auth.setText("SigIn");
+                logout();
+                update();
             }
         });
         auth.setBounds(1080, 60, 80, 30);
@@ -59,14 +65,34 @@ public class HomeComponent extends JPanel {
         add(game);
         add(record);
         add(auth);
-        if(RouletteGame.user) add(nickName);
-        if(!RouletteGame.user) add(signUp);
+        add(nickName);
+        add(signUp);
+    }
+
+    public void update() {
+        removeAll();
+        add(game);
+        add(record);
+        if(RouletteGame.user.getNickname() != null) {
+            nickName.setText(RouletteGame.user.getNickname());
+            auth.setText("Logout");
+            auth.setLocation(1080, 25);
+            add(auth);
+            add(nickName);
+        }else {
+            nickName.setText("");
+            auth.setText("SignIn");
+            auth.setLocation(1080, 60);
+            add(auth);
+            add(signUp);
+        }
+        updateUI();
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Image fondoImage = Toolkit.getDefaultToolkit().getImage(
-                "./src/assets/fondo2.jpg");
+                "./src/main/assets/fondo2.jpg");
         g.drawImage(fondoImage, 0, 0, this.getWidth(), this.getHeight(), this);
     }
 
@@ -88,13 +114,19 @@ public class HomeComponent extends JPanel {
         if (result == JOptionPane.OK_OPTION) {
             try{
                 //guardar en db
+                String nickN = usernameField.getText().trim();
+                String pass = passwordField.getText().trim();
+                User newUser = new User(nickN, pass);
+                userService.insert(newUser);
+                RouletteGame.user.setNickname(nickN);
+                RouletteGame.user.setPassword(pass);
+                int id = userService.selectID(nickN, pass);
+                RouletteGame.user.setId(id);
                 JOptionPane.showMessageDialog(null, "Welcome " + usernameField.getText());
-                //actualizar user
-                RouletteGame.user = true;
-                auth.setText("Logout");
-                nickName.setText("Name");//RouletteGame.user.getNickName()
+                update();
             }catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "User already exist 🫣");
+                JOptionPane.showMessageDialog(null,
+                        "User already exist 🫣" + e.getMessage());
             }
         }
     }
@@ -115,16 +147,24 @@ public class HomeComponent extends JPanel {
 
         if (result == JOptionPane.OK_OPTION) {
             try{
-                //guardar en db
+                String nickN = usernameField.getText().trim();
+                String pass = passwordField.getText().trim();
+                int id = userService.selectID(nickN, pass);
+                RouletteGame.user.setId(id);
+                RouletteGame.user.setNickname(nickN);
+                RouletteGame.user.setPassword(pass);
                 JOptionPane.showMessageDialog(null, "Welcome " + usernameField.getText());
-                //actualizar user
-                RouletteGame.user = true;
-                auth.setText("Logout");
-            }catch (Exception e) {
+                update();
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Nickname or password " +
-                        "incorrect" +
-                        " 🫣");
+                        "incorrect");
             }
         }
+    }
+
+    public void logout() {
+        RouletteGame.user.setId(-1);
+        RouletteGame.user.setPassword(null);
+        RouletteGame.user.setNickname(null);
     }
 }

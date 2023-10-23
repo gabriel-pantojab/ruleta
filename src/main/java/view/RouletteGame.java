@@ -1,5 +1,7 @@
 package view;
 
+import logic.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +11,7 @@ public class RouletteGame extends JFrame {
     private Router router;
     private String currentRoute;
     private JPanel mainPanel;
-    public static boolean user;
+    public static User user;
     public RouletteGame() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -17,7 +19,7 @@ public class RouletteGame extends JFrame {
         buildRoutes();
         currentRoute = "home";
 
-        user = false;
+        user = new User();
 
         setTitle("Roulette 🙂🛞");
         setBounds(0, 0,1200, 600);

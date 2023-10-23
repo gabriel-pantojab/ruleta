@@ -5,6 +5,7 @@ import logic.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserService {
     Conexion conexion = Conexion.getInstance();
@@ -84,19 +85,20 @@ public class UserService {
         }
     }
 
-    public int selectID(String nickname){
+    public int selectID(String nickname, String password) throws SQLException {
         try{
             Connection connection = conexion.connect();
-            ps = connection.prepareStatement("SELECT*FROM user WHERE nickname=?");
+            ps = connection.prepareStatement("SELECT iduser FROM user WHERE " +
+                    "nickname=? AND password=?");
             ps.setString(1, nickname);
+            ps.setString(2, password);
             rs = ps.executeQuery();
             rs.next();
             int res = rs.getInt(1);
             conexion.closeConnection();
             return res;
         }catch (Exception e){
-            System.out.println("No se pudo seleccionar el dato. " + e);
+            throw new SQLException(e);
         }
-        return 0;
     }
 }
