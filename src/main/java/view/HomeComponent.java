@@ -26,8 +26,14 @@ public class HomeComponent extends JPanel {
         game = new JButton("Play");
         game.addActionListener(e -> {
             String balance = JOptionPane.showInputDialog("Balance");
-            if(balance != null) router.navigate("game-roulette", "balance",
-                    balance);
+            try{
+                long b = Long.parseLong(balance);
+                router.navigate("game-roulette", "balance",
+                        balance);
+            }catch (Exception e1) {
+                if(balance != null) JOptionPane.showMessageDialog(null,
+                        "Invalid Amount");
+            }
         });
         record = new JButton("See History");
         record.addActionListener(e -> {
@@ -63,11 +69,7 @@ public class HomeComponent extends JPanel {
         record.setFont(new Font("arial", Font.BOLD, 17));
         record.setEnabled(false);
 
-        add(game);
-        add(record);
-        add(auth);
-        add(nickName);
-        add(signUp);
+        update();
     }
 
     public void update() {

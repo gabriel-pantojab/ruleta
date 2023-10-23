@@ -63,7 +63,11 @@ public class TableView extends JPanel {
         goHome = new JButton("Home");
         goHome.setBounds(1100, 30, 70, 30);
         goHome.addActionListener(e->{
-            Object[] options = {"Save and Exit", "Exit"};
+            if(RouletteGame.user.getNickname() == null) {
+                router.navigate("home");
+                return;
+            }
+            Object[] options = new Object[]{"Save and Exit", "Exit"};
             int choice = JOptionPane.showOptionDialog(null, "", "Casino",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE,

@@ -91,9 +91,11 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                 table.setCurrentChip(null);
                 table.spinRoulette();
                 table.getSpinButton().setEnabled(false);
+                table.getClearGridButton().setEnabled(false);
                 try{
                     Thread.sleep(6500);
                     table.getSpinButton().setEnabled(true);
+                    table.getClearGridButton().setEnabled(true);
                     Pocket pocket = game.spinRoulette();
                     JOptionPane.showMessageDialog(null,
                             pocket.getColor() +": "+ pocket.getValue());
