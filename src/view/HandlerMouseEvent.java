@@ -34,8 +34,9 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
             boolean success = game.toBetInRound(bet);
             if(success) {
                 table.getSpinButton().setEnabled(true);
+                table.setBalanceLabel(game.getBalance()+"");
+                table.setTotalBetLabel(game.getCurrentRound().getTotalBet()+"");
             }
-            table.setBalanceLabel(game.getBalance()+"");
         }
         for(ChipView c : table.getChipsAvailable()) {
             if(c.contains(x, y)) {
@@ -92,9 +93,15 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                     JOptionPane.showMessageDialog(null,
                             pocket.getColor() +": "+ pocket.getValue());
                     long winAmount = game.getWinAmount(pocket);
+                    JOptionPane.showMessageDialog(null,
+                            "Win Amount: " + winAmount);
                     game.updateBalance(winAmount);
                     table.updateChipsAvailable(game.getChipsAvailable());
                     table.setBalanceLabel(game.getBalance()+"");
+                    table.setTotalBetLabel("0");
+                    table.clearGrid();
+                    game.createNewRound();
+                    table.repaint();
                     run = false;
                 }catch (Exception ignored){}
             });

@@ -46,7 +46,7 @@ public class TableView extends JPanel {
         balanceLabel.setBounds(400, 30, 200, 30);
         balanceLabel.setForeground(Color.WHITE);
 
-        totalBetLabel = new JLabel("Total bet: ");
+        totalBetLabel = new JLabel("Total bet: 0");
         totalBetLabel.setFont(new Font("arial", Font.BOLD, 20));
         totalBetLabel.setBounds(600, 30, 200, 30);
         totalBetLabel.setForeground(Color.WHITE);
@@ -90,6 +90,10 @@ public class TableView extends JPanel {
 
     public void setBalanceLabel(String newBalance) {
         balanceLabel.setText("Balance: "+newBalance);
+    }
+
+    public void setTotalBetLabel(String total) {
+        totalBetLabel.setText("Total bet: " + total);
     }
 
     public ArrayList<BetBox> getBetBoxes() {
@@ -284,8 +288,12 @@ public class TableView extends JPanel {
         return boxes;
     }
 
-    public void disableAllChips() {
-        for(ChipView c : chipsAvailable) c.setActive(false);
-        repaint();
+    public void clearGrid() {
+        for(BettingGridBoxView b : boxes) {
+            b.setLastChip(null);
+        }
+        for(BetBox b : betBoxes) {
+            b.setLastChip(null);
+        }
     }
 }
