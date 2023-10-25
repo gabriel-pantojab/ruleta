@@ -86,16 +86,20 @@ public class BoxElement {
         boolean bottom = clickBottomBorder(x, y);
         boolean left = clickLeftBorder(x, y);
         boolean right = clickRightBorder(x, y);
-        return up || bottom || left || right;
+        boolean topLeft = clickTopLeft(x, y);
+        boolean topRight = clickTopRight(x, y);
+        boolean bottomLeft = clickBottomLeft(x, y);
+        boolean bottomRight = clickBottomRight(x, y);
+        return up || bottom || left || right || topLeft || topRight || bottomRight || bottomLeft;
     }
 
     public boolean clickTopBorder(int x, int y) {
-        return x >= this.x && x <= this.x + width && (y >= this.y - 6 && y
+        return x >= this.x + 20 && x <= this.x + width - 20 && (y >= this.y - 6 && y
                 <= this.y + 6);
     }
 
     public boolean clickBottomBorder(int x, int  y) {
-        return x >= this.x && x <= this.x + width && (y >= this.y + height - 6  && y
+        return x >= this.x + 20 && x <= this.x + width - 20 && (y >= this.y + height - 6  && y
                 <= this.y + height + 6);
     }
 
@@ -105,6 +109,30 @@ public class BoxElement {
 
     public boolean clickRightBorder(int x, int y) {
         return y >= this.y + 26 && y <= this.y + height - 26 && x >= this.x + width - 6 && x <= this.x + width + 6;
+    }
+
+    public boolean clickTopLeft(int x, int y) {
+        return x >= this.x - 6 && x <= this.x + 12 && y >= this.y - 6 && y <= this.y + 12;
+    }
+
+    public boolean clickTopRight(int x, int y) {
+        return x >= this.x + width - 12 && x <= this.x + width + 6 && y >= this.y - 6 && y <= this.y + 12;
+    }
+
+    public boolean clickBottomLeft(int x, int y) {
+        return x >= this.x - 6 && x <= this.x + 12 && y >= this.y + height - 12 && y <= this.y + height + 6;
+    }
+
+    public boolean clickBottomRight(int x, int y) {
+        return x >= this.x + width - 12 && x <= this.x + width + 6 && y >= this.y + height - 12 && y <= this.y + height + 6;
+    }
+
+    public boolean clickCorner(int x, int y) {
+        boolean topLeft = clickTopLeft(x, y);
+        boolean topRight = clickTopRight(x, y);
+        boolean bottomLeft = clickBottomLeft(x, y);
+        boolean bottomRight = clickBottomRight(x, y);
+        return topLeft || topRight || bottomRight || bottomLeft;
     }
 
     public void paint(Graphics2D g) {

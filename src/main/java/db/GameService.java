@@ -4,6 +4,7 @@ import logic.Game;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class GameService {
     Conexion conexion = Conexion.getInstance();
@@ -185,6 +186,31 @@ public class GameService {
             System.out.println("No se pudieron seleccionar los juegos y rondas para el usuario " + e);
         }
     }
+
+    public ArrayList<GameData> selectGamesUser(int id_user) {
+        try {
+            Connection connection = conexion.connect();
+            ps = connection.prepareStatement("SELECT * FROM game WHERE " +
+                    "user_id = ?");
+            ps.setInt(1, id_user);
+            rs = ps.executeQuery();
+
+            ArrayList<GameData> games = new ArrayList<GameData>();
+            while(rs.next()){
+                int res = rs.getInt("balance");
+                int win = rs.getInt("totalWinAmount");
+                int lost = rs.getInt("totalLostAmount");
+                games.add(new GameData(res+"", win+"", lost+""));
+            }
+
+            conexion.closeConnection();
+            return games;
+        } catch (Exception e) {
+            System.out.println("No se pudo seleccionar todos los datos " + e);
+        }
+        return null;
+    }
+
 
     private void showTable(ResultSet rss){
         try{

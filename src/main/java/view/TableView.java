@@ -1,12 +1,12 @@
 package view;
 
+import db.GameService;
 import logic.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class TableView extends JPanel {
     private BettingGrid grid;
@@ -25,8 +25,9 @@ public class TableView extends JPanel {
     private JButton goHome;
 
     private Router router;
-
+    private GameService gameService;
     public TableView(BettingGrid grid) {
+        gameService = GameService.getInstance();
         router = Router.getInstance();
         setLayout(null);
         setBackground(new Color(3, 51, 6));
@@ -62,24 +63,6 @@ public class TableView extends JPanel {
 
         goHome = new JButton("Home");
         goHome.setBounds(1100, 30, 70, 30);
-        goHome.addActionListener(e->{
-            if(RouletteGame.user.getNickname() == null) {
-                router.navigate("home");
-                return;
-            }
-            Object[] options = new Object[]{"Save and Exit", "Exit"};
-            int choice = JOptionPane.showOptionDialog(null, "", "Casino",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-            if(choice == 0) {
-                //guardar en la db
-                JOptionPane.showMessageDialog(null, "Guardando...");
-            }
-            router.navigate("home");
-        });
 
         add(roulette);
         add(spinButton);
@@ -118,6 +101,10 @@ public class TableView extends JPanel {
 
     public JButton getClearGridButton() {
         return clearGridButton;
+    }
+
+    public JButton getGoHome() {
+        return  goHome;
     }
 
     public void spinRoulette() {
@@ -183,8 +170,8 @@ public class TableView extends JPanel {
         }
     }
 
-    public void selectBoxes(ArrayList<Integer> indexs) {
-        for(int v : indexs) {
+    public void selectBoxes(ArrayList<Integer> indexes) {
+        for(int v : indexes) {
             int ini, inc = 1;
             if(v % 3 == 0) {
                 ini = v / 3;
@@ -198,50 +185,94 @@ public class TableView extends JPanel {
         }
     }
 
+
     public BetTypeStruct getTypeBet(int x, int y) {
-        int count = 0;
-        boolean bottom = true, top = true;
+        Set<Integer> topLine = new HashSet<Integer>();
+        Set<Integer> bottomLine = new HashSet<Integer>();
+        topLine.add(3);
+        topLine.add(6);
+        topLine.add(9);
+        topLine.add(12);
+        topLine.add(15);
+        topLine.add(18);
+        topLine.add(21);
+        topLine.add(24);
+        topLine.add(27);
+        topLine.add(30);
+        topLine.add(33);
+        topLine.add(36);
+
+        bottomLine.add(1);
+        bottomLine.add(4);
+        bottomLine.add(7);
+        bottomLine.add(10);
+        bottomLine.add(13);
+        bottomLine.add(16);
+        bottomLine.add(19);
+        bottomLine.add(22);
+        bottomLine.add(25);
+        bottomLine.add(28);
+        bottomLine.add(31);
+        bottomLine.add(34);
         ArrayList<Integer> values = new ArrayList<Integer>();
+        ArrayList<BettingGridBoxView> aux = new ArrayList<BettingGridBoxView>();
         for(BettingGridBoxView b : boxes) {
             if(b.clickBorder(x, y)) {
-                count++;
-                bottom &= b.clickBottomBorder(x, y);
-                top &= b.clickTopBorder(x, y);
+                aux.add(b);
                 values.add(Integer.parseInt(b.getValue().trim()));
             }
         }
-        if(count == 4) {
+        if(aux.size() == 4) {
             return new BetTypeStruct("angle", new int[]{
                     values.get(0),
                     values.get(1),
                     values.get(2),
                     values.get(3),
             });
-        }else if(bottom || top){
-            if(count == 2) {
-                int init, end;
-                if(values.get(0) % 3 == 0) {
-                    init = values.get(0) - 2;
-                    end = values.get(1);
+        }else {
+            BettingGridBoxView b1, b2;
+            if(aux.size() == 2) {
+                b1 = aux.get(0); b2 = aux.get(1);
+                if(b1.clickRightBorder(x, y) && b2.clickLeftBorder(x, y) ||
+                    b1.clickBottomBorder(x, y) && b2.clickTopBorder(x, y)
+                ) {
+                    return new BetTypeStruct("adjacent", new int[]{values.get(0),
+                            values.get(1)});
                 }else {
-                    init = values.get(0);
-                    end = values.get(1) + 2;
+                    b1 = aux.get(0); b2 = aux.get(1);
+                    if((b1.clickBottomRight(x, y) && b2.clickBottomLeft(x,
+                            y) && bottomLine.contains(Integer.parseInt(b1.getValue().trim())) &&
+                                bottomLine.contains(Integer.parseInt(b2.getValue().trim()))
+                            ) ||
+                            (b1.clickTopRight(x, y) && b2.clickTopLeft(x, y) &&
+                                    topLine.contains(Integer.parseInt(b1.getValue().trim())) &&
+                                    topLine.contains(Integer.parseInt(b2.getValue().trim())))
+                    ) {
+                        int init, end;
+                        if (values.get(0) % 3 == 0) {
+                            init = values.get(0) - 2;
+                            end = values.get(1);
+                        } else {
+                            init = values.get(0);
+                            end = values.get(1) + 2;
+                        }
+                        return new BetTypeStruct("line", new int[]{init, end});
+                    }
                 }
-                return new BetTypeStruct("line", new int[]{init, end});
-            }else if(count == 1) {
-                int init, end;
-                if(values.get(0) % 3 == 0) {
-                    init = values.get(0) - 2;
-                    end = values.get(0);
-                }else {
-                    init = values.get(0);
-                    end = values.get(0) + 2;
+            }else if(aux.size() == 1) {
+                 b1 = aux.get(0);
+                if(b1.clickBottomBorder(x, y) || b1.clickTopBorder(x, y)) {
+                    int init, end;
+                    if(values.get(0) % 3 == 0) {
+                        init = values.get(0) - 2;
+                        end = values.get(0);
+                    }else {
+                        init = values.get(0);
+                        end = values.get(0) + 2;
+                    }
+                    return new BetTypeStruct("street", new int[]{init, end});
                 }
-                return new BetTypeStruct("street", new int[]{init, end});
             }
-        }else if(count == 2) {
-            return new BetTypeStruct("adjacent", new int[]{values.get(0),
-                    values.get(1)});
         }
         return new BetTypeStruct("unique");
     }
@@ -258,16 +289,17 @@ public class TableView extends JPanel {
                 b.getLastChip().setLocation(b.getX() + 6, b.getY() + 13);
                 ans = new UniqueBet(currentChip.getChip(),
                         Integer.parseInt(b.getValue().trim()));
-            }else if(b.clickBorder(x, y)) {
-                ChipView c = (ChipView) currentChip.clone();
-                c.setActive(true);
-                chipsInBoxes.add(c);
             }
         }
         if(ans == null) {
             BetTypeStruct betTypeStruct = getTypeBet(x, y);
             String type = betTypeStruct.getType();
             int[] values = betTypeStruct.getValues();
+            if(!type.equals("unique")) {
+                ChipView c = (ChipView) currentChip.clone();
+                c.setActive(true);
+                chipsInBoxes.add(c);
+            }
             try{
                 ans = switch (type) {
                     case "street" ->
@@ -331,5 +363,6 @@ public class TableView extends JPanel {
         for(BetBox b : betBoxes) {
             b.setLastChip(null);
         }
+        chipsInBoxes.clear();
     }
 }

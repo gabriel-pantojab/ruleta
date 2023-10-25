@@ -1,5 +1,7 @@
 package view;
 
+import db.GameService;
+import db.RoundService;
 import logic.Bet;
 import logic.Game;
 import logic.Pocket;
@@ -16,13 +18,18 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     private Game game;
     private boolean run;
     private Router router;
+    private GameService gameService;
+    private RoundService roundService;
     public HandlerMouseEvent(TableView table, Game game) {
+        roundService = RoundService.getInstance();
+        gameService = GameService.getInstance();
         router = Router.getInstance();
         this.table = table;
         this.table.addMouseListener(this);
         this.table.addMouseMotionListener(this);
         this.table.getSpinButton().addActionListener(this);
         this.table.getClearGridButton().addActionListener(this);
+        this.table.getGoHome().addActionListener(this);
         this.game = game;
         this.run = false;
     }
@@ -60,23 +67,26 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         if(run) return;
         int x = e.getX();
         int y = e.getY();
-        ArrayList<Integer> indexs = new ArrayList<Integer>();
+        ArrayList<Integer> indexes = new ArrayList<Integer>();
         if(table.getCurrentChip() != null) {
             for(BettingGridBoxView b : table.getBoxes()) {
-                if(b.clickBottomBorder(x, y) || b.clickTopBorder(x, y)) {
-                    String type = table.getTypeBet(x, y).getType();
+                String type = table.getTypeBet(x, y).getType();
+                if(b.clickBorder(x, y)) {
                     if(type.equals("line") || type.equals("street")) {
                         int v = Integer.parseInt(b.getValue().trim());
-                        indexs.add(v);
-                    }else b.setSelect(b.clickBorder(x, y));
-                }else b.setSelect(b.contains(x, y) || b.clickBorder(x, y));
+                        indexes.add(v);
+                    }else {
+                        b.setSelect(type.equals("adjacent") || type.equals(
+                                "angle"));
+                    }
+                }else b.setSelect(b.contains(x, y));
             }
             for(BetBox b : table.getBetBoxes()) {
                 b.setSelect(b.contains(x, y));
             }
             table.setLocationCurrentChip(x, y);
         }
-        table.selectBoxes(indexs);
+        table.selectBoxes(indexes);
         table.repaint();
     }
 
@@ -94,8 +104,6 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                 table.getClearGridButton().setEnabled(false);
                 try{
                     Thread.sleep(6500);
-                    table.getSpinButton().setEnabled(true);
-                    table.getClearGridButton().setEnabled(true);
                     Pocket pocket = game.spinRoulette();
                     JOptionPane.showMessageDialog(null,
                             pocket.getColor() +": "+ pocket.getValue());
@@ -128,6 +136,23 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
             table.getSpinButton().setEnabled(false);
             table.updateChipsAvailable(game.getChipsAvailable());
             table.repaint();
+        }else if(s.equals(table.getGoHome())) {
+            if(RouletteGame.user.getNickname() == null) {
+                router.navigate("home");
+                return;
+            }
+            Object[] options = new Object[]{"Save and Exit", "Exit"};
+            int choice = JOptionPane.showOptionDialog(null, "", "Casino",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+            if(choice == 0) {
+                //guardar en la db
+                JOptionPane.showMessageDialog(null, "Guardando...");
+            }
+            router.navigate("home");
         }
     }
 }
