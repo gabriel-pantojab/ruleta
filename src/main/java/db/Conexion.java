@@ -8,16 +8,16 @@ public class Conexion {
     private static Conexion instance;
     private static final String URL = "jdbc:mysql://localhost:3306/db_roulette";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "limfres";
+    private static final String PASSWORD = "root";
 
     private Conexion(){
     }
 
-    public Connection connect(){
+    public Connection connect() throws Exception {
         try {
             conexion = DriverManager.getConnection(URL,USERNAME,PASSWORD);
         }catch (Exception e){
-            System.out.println("Error al conectar con la base de datos " + e);
+            throw new  Exception("Error al conectar con la base de datos " + e);
         }
         return conexion;
     }

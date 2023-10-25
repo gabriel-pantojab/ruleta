@@ -26,7 +26,8 @@ public class HistoryComponent extends JPanel {
         int i = 1;
         for(GameData g : games) {
             gamesPanel.add(new GameView("Game "+i+"", g.getBalance()+"",
-                    g.getTotalWinAmount(), g.getTotalLostAmount()));
+                    g.getCurrentBalance()+"",
+                    g.getTotalWinAmount(), g.getTotalLostAmount(), g.getIdGame()));
                     i++;
         }
         add(home, BorderLayout.NORTH);

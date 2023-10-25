@@ -1,11 +1,8 @@
 package view;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class Router {
     private static Router router;
@@ -47,6 +44,16 @@ public class Router {
 
     public void navigate(String route, String nameParam, String value) {
         params.put(nameParam, value);
+        this.currentRoute = route;
+        this.mainFrame.updateUI();
+    }
+
+    public void navigate(String route, Map<String, String> params) {
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String nameParam = entry.getKey();
+            String valueParam = entry.getValue();
+            this.params.put(nameParam, valueParam);
+        }
         this.currentRoute = route;
         this.mainFrame.updateUI();
     }

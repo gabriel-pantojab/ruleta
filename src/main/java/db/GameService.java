@@ -1,6 +1,5 @@
 package db;
 
-import logic.Game;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,20 +20,27 @@ public class GameService {
         }
         return gameService;
     }
-    public void insert(Game game, int idUser, int totalWinAmount, int totalLostAmount){
+    public int insert(long balance, int userid){
         try {
             Connection connection = conexion.connect();
-            ps = connection.prepareStatement("INSERT INTO game VALUES (?,?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO game VALUES (?,?,?,?,?,?)");
             ps.setString(1,"0");
-            ps.setLong(2,game.getBalance());
-            ps.setInt(4,totalWinAmount);
-            ps.setInt(5,totalLostAmount);
-            ps.setInt(3,idUser);
+            ps.setLong(2,balance);
+            ps.setLong(3,balance);
+            ps.setInt(4,0);
+            ps.setInt(5,0);
+            ps.setInt(6, userid);
             ps.executeUpdate();
+            ps = connection.prepareStatement("select last_insert_id()");
+            rs = ps.executeQuery();
+            rs.next();
+            int id = rs.getInt(1);
             conexion.closeConnection();
+            return id;
         }catch (Exception e){
             System.out.println("No se pudo insertar" + e);
         }
+        return -1;
     }
 
     public void deleteAll(){
@@ -111,6 +117,22 @@ public class GameService {
         }
     }
 
+    public long selectCurrentBalanceGame(int idgame) {
+        try {
+            Connection connection = conexion.connect();
+            ps = connection.prepareStatement("SELECT currentBalance FROM game WHERE idgame = ? ");
+            ps.setInt(1, idgame);
+            rs = ps.executeQuery();
+            rs.next();
+            long res = rs.getLong(1);
+            conexion.closeConnection();
+            return res;
+        } catch (Exception e) {
+            System.out.println("No se pudo seleccionar todos los datos " + e);
+        }
+        return 0;
+    }
+
     public int selectWinAmountGame(int idgame) {
         try {
             Connection connection = conexion.connect();
@@ -143,13 +165,14 @@ public class GameService {
         return 0;
     }
 
-    public void update(int totalWinAmount, int totalLostAmoutn, int idgame){
+    public void update(long currentBalance, long totalWinAmount, long totalLostAmoutn, int idgame){
         try {
             Connection connection = conexion.connect();
-            ps = connection.prepareStatement("UPDATE game set totalWinAmount = ?, totalLostAmount = ?  WHERE idgame = ?");
-            ps.setInt(1, totalWinAmount);
-            ps.setInt(2, totalLostAmoutn);
-            ps.setInt(3, idgame);
+            ps = connection.prepareStatement("UPDATE game set currentBalance = ?, totalWinAmount = ?, totalLostAmount = ?  WHERE idgame = ?");
+            ps.setLong(1, currentBalance);
+            ps.setLong(2, totalWinAmount);
+            ps.setLong(3, totalLostAmoutn);
+            ps.setInt(4, idgame);
             ps.executeUpdate();
             conexion.closeConnection();
         }catch (Exception e){
@@ -197,10 +220,12 @@ public class GameService {
 
             ArrayList<GameData> games = new ArrayList<GameData>();
             while(rs.next()){
+                int idGame = rs.getInt("idgame");
                 int res = rs.getInt("balance");
+                int current = rs.getInt("currentBalance");
                 int win = rs.getInt("totalWinAmount");
                 int lost = rs.getInt("totalLostAmount");
-                games.add(new GameData(res+"", win+"", lost+""));
+                games.add(new GameData(res+"", current+"",lost+"", win+"", idGame));
             }
 
             conexion.closeConnection();

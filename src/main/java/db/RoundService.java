@@ -20,19 +20,21 @@ public class RoundService {
         return roundService;
     }
 
-    public void insert(int winAmount, int lostAmount, int idgame){
+    public void insert(long winAmount, long lostAmount, long totalBetAmount, int idgame){
         try {
             Connection connection = conexion.connect();
-            ps = connection.prepareStatement("INSERT INTO round VALUES (?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO round VALUES (?,?,?,?,?)");
             ps.setString(1,"0");
-            ps.setInt(2,winAmount);
-            ps.setInt(3,lostAmount);
-            ps.setInt(4,idgame);
+            ps.setLong(2,winAmount);
+            ps.setLong(3,lostAmount);
+            ps.setLong(4, totalBetAmount);
+            ps.setInt(5,idgame);
             ps.executeUpdate();
             GameService gameDB = GameService.getInstance();
-            int win = gameDB.selectWinAmountGame(idgame) + winAmount;
-            int lost = gameDB.selectLostAmountGame(idgame) + lostAmount;
-            gameDB.update(win,lost,idgame);
+            long win = gameDB.selectWinAmountGame(idgame) + winAmount;
+            long lost = gameDB.selectLostAmountGame(idgame) + lostAmount;
+            long currentBalance = gameDB.selectCurrentBalanceGame(idgame) - totalBetAmount + winAmount;
+            gameDB.update(currentBalance, win,lost,idgame);
             conexion.closeConnection();
         }catch (Exception e){
             System.out.println("No se pudo insertar la ronda " + e);

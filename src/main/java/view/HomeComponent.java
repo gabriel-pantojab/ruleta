@@ -6,8 +6,8 @@ import logic.User;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeComponent extends JPanel {
     private JButton game;
@@ -28,8 +28,10 @@ public class HomeComponent extends JPanel {
             String balance = JOptionPane.showInputDialog("Balance");
             try{
                 long b = Long.parseLong(balance);
-                router.navigate("game-roulette", "balance",
-                        balance);
+                Map<String, String> params = new HashMap<>();
+                params.put("balance", balance);
+                params.put("create-game", "true");
+                router.navigate("game-roulette", params);
             }catch (Exception e1) {
                 if(balance != null) JOptionPane.showMessageDialog(null,
                         "Invalid Amount");
@@ -136,7 +138,7 @@ public class HomeComponent extends JPanel {
         }
     }
 
-    public void showSignUpDialog() {
+    public void showSignUpDialog () {
         JTextField usernameField = new JTextField(10);
         JPasswordField passwordField = new JPasswordField(10);
 
@@ -158,11 +160,13 @@ public class HomeComponent extends JPanel {
                 RouletteGame.user.setId(id);
                 RouletteGame.user.setNickname(nickN);
                 RouletteGame.user.setPassword(pass);
+
                 JOptionPane.showMessageDialog(null, "Welcome " + usernameField.getText());
                 update();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Nickname or password " + "incorrect");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Nickname or password " +
-                        "incorrect");
+                JOptionPane.showMessageDialog(null, e.getMessage());
             }
         }
     }

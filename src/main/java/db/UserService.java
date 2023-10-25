@@ -85,7 +85,7 @@ public class UserService {
         }
     }
 
-    public int selectID(String nickname, String password) throws SQLException {
+    public int selectID(String nickname, String password) throws Exception {
         try{
             Connection connection = conexion.connect();
             ps = connection.prepareStatement("SELECT iduser FROM user WHERE " +
@@ -97,8 +97,10 @@ public class UserService {
             int res = rs.getInt(1);
             conexion.closeConnection();
             return res;
-        }catch (Exception e){
+        } catch (SQLException e){
             throw new SQLException(e);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
     }
 }

@@ -110,6 +110,9 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                     long winAmount = game.getWinAmount(pocket);
                     JOptionPane.showMessageDialog(null,
                             "Win Amount: " + winAmount);
+                    roundService.insert(winAmount,
+                            Math.max(game.getCurrentRound().getTotalBet() - winAmount, 0)
+                            , game.getCurrentRound().getTotalBet(), RouletteGame.idCurrentGame);
                     game.updateBalance(winAmount);
                     table.updateChipsAvailable(game.getChipsAvailable());
                     table.setBalanceLabel(game.getBalance()+"");
@@ -141,17 +144,7 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                 router.navigate("home");
                 return;
             }
-            Object[] options = new Object[]{"Save and Exit", "Exit"};
-            int choice = JOptionPane.showOptionDialog(null, "", "Casino",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[0]);
-            if(choice == 0) {
-                //guardar en la db
-                JOptionPane.showMessageDialog(null, "Guardando...");
-            }
+            JOptionPane.showMessageDialog(null, "Save Game ✅");
             router.navigate("home");
         }
     }

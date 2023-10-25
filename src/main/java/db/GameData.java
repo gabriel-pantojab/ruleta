@@ -2,14 +2,34 @@ package db;
 
 public class GameData {
     private String balance;
+    private String currentBalance;
     private String totalWinAmount;
     private String totalLostAmount;
+    private int idGame;
 
-    public GameData(String balance, String totalLostAmount,
-                    String totalWinAmount) {
+    public GameData(String balance, String currentBalance, String totalLostAmount,
+                    String totalWinAmount, int idGame) {
+        this.idGame = idGame;
         this.balance = balance;
+        this.currentBalance = currentBalance;
         this.totalLostAmount = totalLostAmount;
         this.totalWinAmount = totalWinAmount;
+    }
+
+    public int getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(int idGame) {
+        this.idGame = idGame;
+    }
+
+    public String getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(String currentBalance) {
+        this.currentBalance = currentBalance;
     }
 
     public String getBalance() {
