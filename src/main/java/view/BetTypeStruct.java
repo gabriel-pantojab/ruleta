@@ -3,20 +3,20 @@ package view;
 import java.util.ArrayList;
 
 public class BetTypeStruct {
-    private String type;
+    private TypeBet type;
     private int[] values;
 
-    public BetTypeStruct(String type, int[] values) {
+    public BetTypeStruct(TypeBet type, int[] values) {
         this.type = type;
         this.values = values;
     }
 
-    public BetTypeStruct(String type) {
+    public BetTypeStruct(TypeBet type) {
         this.type = type;
         this.values = null;
     }
 
-    public String getType() {
+    public TypeBet getType() {
         return type;
     }
 
@@ -24,7 +24,7 @@ public class BetTypeStruct {
         return values;
     }
 
-    public void setType(String type) {
+    public void setType(TypeBet type) {
         this.type = type;
     }
 
