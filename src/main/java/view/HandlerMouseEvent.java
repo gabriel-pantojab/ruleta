@@ -70,14 +70,14 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         ArrayList<Integer> indexes = new ArrayList<Integer>();
         if(table.getCurrentChip() != null) {
             for(BettingGridBoxView b : table.getBoxes()) {
-                String type = table.getTypeBet(x, y).getType();
+                TypeBet type = table.getTypeBet(x, y).getType();
                 if(b.clickBorder(x, y)) {
-                    if(type.equals("line") || type.equals("street")) {
+                    if(type.equals(TypeBet.LINE) || type.equals(TypeBet.STREET)) {
                         int v = Integer.parseInt(b.getValue().trim());
                         indexes.add(v);
                     }else {
-                        b.setSelect(type.equals("adjacent") || type.equals(
-                                "angle"));
+                        b.setSelect(type.equals(TypeBet.ADJACENT) || type.equals(
+                                TypeBet.ANGLE));
                     }
                 }else b.setSelect(b.contains(x, y));
             }

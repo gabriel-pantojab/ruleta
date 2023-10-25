@@ -187,33 +187,7 @@ public class TableView extends JPanel {
 
 
     public BetTypeStruct getTypeBet(int x, int y) {
-        Set<Integer> topLine = new HashSet<Integer>();
-        Set<Integer> bottomLine = new HashSet<Integer>();
-        topLine.add(3);
-        topLine.add(6);
-        topLine.add(9);
-        topLine.add(12);
-        topLine.add(15);
-        topLine.add(18);
-        topLine.add(21);
-        topLine.add(24);
-        topLine.add(27);
-        topLine.add(30);
-        topLine.add(33);
-        topLine.add(36);
-
-        bottomLine.add(1);
-        bottomLine.add(4);
-        bottomLine.add(7);
-        bottomLine.add(10);
-        bottomLine.add(13);
-        bottomLine.add(16);
-        bottomLine.add(19);
-        bottomLine.add(22);
-        bottomLine.add(25);
-        bottomLine.add(28);
-        bottomLine.add(31);
-        bottomLine.add(34);
+        BetTypeStruct ans = null;
         ArrayList<Integer> values = new ArrayList<Integer>();
         ArrayList<BettingGridBoxView> aux = new ArrayList<BettingGridBoxView>();
         for(BettingGridBoxView b : boxes) {
@@ -222,59 +196,27 @@ public class TableView extends JPanel {
                 values.add(Integer.parseInt(b.getValue().trim()));
             }
         }
+        BuilderBetTypeStruct builder;
         if(aux.size() == 4) {
-            return new BetTypeStruct("angle", new int[]{
-                    values.get(0),
-                    values.get(1),
-                    values.get(2),
-                    values.get(3),
-            });
+            builder = new AngleBetStruct(values);
+            ans = builder.getBetStruct();
         }else {
             BettingGridBoxView b1, b2;
             if(aux.size() == 2) {
-                b1 = aux.get(0); b2 = aux.get(1);
-                if(b1.clickRightBorder(x, y) && b2.clickLeftBorder(x, y) ||
-                    b1.clickBottomBorder(x, y) && b2.clickTopBorder(x, y)
-                ) {
-                    return new BetTypeStruct("adjacent", new int[]{values.get(0),
-                            values.get(1)});
-                }else {
-                    b1 = aux.get(0); b2 = aux.get(1);
-                    if((b1.clickBottomRight(x, y) && b2.clickBottomLeft(x,
-                            y) && bottomLine.contains(Integer.parseInt(b1.getValue().trim())) &&
-                                bottomLine.contains(Integer.parseInt(b2.getValue().trim()))
-                            ) ||
-                            (b1.clickTopRight(x, y) && b2.clickTopLeft(x, y) &&
-                                    topLine.contains(Integer.parseInt(b1.getValue().trim())) &&
-                                    topLine.contains(Integer.parseInt(b2.getValue().trim())))
-                    ) {
-                        int init, end;
-                        if (values.get(0) % 3 == 0) {
-                            init = values.get(0) - 2;
-                            end = values.get(1);
-                        } else {
-                            init = values.get(0);
-                            end = values.get(1) + 2;
-                        }
-                        return new BetTypeStruct("line", new int[]{init, end});
-                    }
+                builder = new AdjacentBetStruct(aux.get(0), aux.get(1), values,
+                        x, y);
+                ans = builder.getBetStruct();
+                if(ans == null) {
+                    builder = new LineBetStruct(aux.get(0), aux.get(1), values,
+                            x, y);
+                    ans = builder.getBetStruct();
                 }
             }else if(aux.size() == 1) {
-                 b1 = aux.get(0);
-                if(b1.clickBottomBorder(x, y) || b1.clickTopBorder(x, y)) {
-                    int init, end;
-                    if(values.get(0) % 3 == 0) {
-                        init = values.get(0) - 2;
-                        end = values.get(0);
-                    }else {
-                        init = values.get(0);
-                        end = values.get(0) + 2;
-                    }
-                    return new BetTypeStruct("street", new int[]{init, end});
-                }
+                 builder = new StreetBetStruct(aux.get(0), values, x, y);
+                 ans = builder.getBetStruct();
             }
         }
-        return new BetTypeStruct("unique");
+        return ans != null ? ans : new BetTypeStruct(TypeBet.UNIQUE);
     }
 
 
@@ -293,24 +235,24 @@ public class TableView extends JPanel {
         }
         if(ans == null) {
             BetTypeStruct betTypeStruct = getTypeBet(x, y);
-            String type = betTypeStruct.getType();
+            TypeBet type = betTypeStruct.getType();
             int[] values = betTypeStruct.getValues();
-            if(!type.equals("unique")) {
+            if(!type.equals(TypeBet.UNIQUE)) {
                 ChipView c = (ChipView) currentChip.clone();
                 c.setActive(true);
                 chipsInBoxes.add(c);
             }
             try{
                 ans = switch (type) {
-                    case "street" ->
+                    case STREET ->
                             new StreetRange(currentChip.getChip(), values[0],
                                     values[1]);
-                    case "line" ->
+                    case LINE ->
                             new LineRange(currentChip.getChip(), values[0],
                                     values[1]);
-                    case "adjacent" ->
+                    case ADJACENT ->
                             new AdjacentSet(currentChip.getChip(), values);
-                    case "angle" -> new AngleSet(currentChip.getChip(), values);
+                    case ANGLE -> new AngleSet(currentChip.getChip(), values);
                     default -> ans;
                 };
             }catch (Exception ignored){}
