@@ -27,9 +27,7 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         this.table = table;
         this.table.addMouseListener(this);
         this.table.addMouseMotionListener(this);
-        this.table.getSpinButton().addActionListener(this);
-        this.table.getClearGridButton().addActionListener(this);
-        this.table.getGoHome().addActionListener(this);
+        this.table.addActionListener(this);
         this.game = game;
         this.run = false;
     }
@@ -96,60 +94,74 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object s = e.getSource();
         if(s.equals(table.getSpinButton())) {
-            Thread r = new Thread(() -> {
-                run = true;
-                table.setIndexCurrentChip(-1);
-                table.repaint();
-                table.setCurrentChip(null);
-                table.spinRoulette();
-                table.getSpinButton().setEnabled(false);
-                table.getClearGridButton().setEnabled(false);
-                try{
-                    Thread.sleep(6500);
-                    Pocket pocket = game.spinRoulette();
-                    JOptionPane.showMessageDialog(null,
-                            pocket.getColor() +": "+ pocket.getValue());
-                    long winAmount = game.getWinAmount(pocket);
-                    JOptionPane.showMessageDialog(null,
-                            "Win Amount: " + winAmount);
-                    if(RouletteGame.user.getNickname() != null) {
-                        roundService.insert(winAmount,
-                                Math.max(game.getCurrentRound().getTotalBet() - winAmount, 0)
-                                , game.getCurrentRound().getTotalBet(), RouletteGame.idCurrentGame);
-                    }
-                    game.updateBalance(winAmount);
-                    table.updateChipsAvailable(game.getChipsAvailable());
-                    table.setBalanceLabel(game.getBalance()+"");
-                    table.setTotalBetLabel("0");
-                    table.clearGrid();
-                    game.createNewRound();
-                    if(game.getBalance() == 0) {
-                        JOptionPane.showMessageDialog(null,"GAME OVER");
-                        router.navigate("home");
-                    }
-                    table.repaint();
-                    run = false;
-                }catch (Exception ignored){}
-            });
-            r.start();
+            spinRoulette();
         }else if(s.equals(table.getClearGridButton())) {
-            table.clearGrid();
-            table.setIndexCurrentChip(-1);
-            table.setCurrentChip(null);
-            game.resetRound();
-            table.setBalanceLabel(game.getBalance()+"");
-            table.setTotalBetLabel("0");
-            table.getClearGridButton().setEnabled(false);
-            table.getSpinButton().setEnabled(false);
-            table.updateChipsAvailable(game.getChipsAvailable());
-            table.repaint();
+            clearGrid();
         }else if(s.equals(table.getGoHome())) {
-            if(RouletteGame.user.getNickname() == null) {
-                router.navigate("home");
-                return;
-            }
-            JOptionPane.showMessageDialog(null, "Save Game ✅");
-            router.navigate("home");
+            goToHome();
         }
+    }
+
+    public void goToHome() {
+        if(RouletteGame.user.getNickname() == null) {
+            router.navigate("home");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Save Game ✅");
+        router.navigate("home");
+    }
+
+    public void clearGrid() {
+        table.clearGrid();
+        table.setIndexCurrentChip(-1);
+        table.setCurrentChip(null);
+        game.resetRound();
+        table.setBalanceLabel(game.getBalance()+"");
+        table.setTotalBetLabel("0");
+        table.getClearGridButton().setEnabled(false);
+        table.getSpinButton().setEnabled(false);
+        table.updateChipsAvailable(game.getChipsAvailable());
+        table.repaint();
+    }
+
+    public void spinRoulette() {
+        Thread r = new Thread(() -> {
+            run = true;
+            table.setIndexCurrentChip(-1);
+            table.repaint();
+            table.setCurrentChip(null);
+            table.spinRoulette();
+            table.getSpinButton().setEnabled(false);
+            table.getClearGridButton().setEnabled(false);
+            table.getGoHome().setEnabled(false);
+            try{
+                Thread.sleep(6500);
+                Pocket pocket = game.spinRoulette();
+                JOptionPane.showMessageDialog(null,
+                        pocket.getColor() +": "+ pocket.getValue());
+                long winAmount = game.getWinAmount(pocket);
+                JOptionPane.showMessageDialog(null,
+                        "Win Amount: " + winAmount);
+                if(RouletteGame.user.getNickname() != null) {
+                    roundService.insert(winAmount,
+                            Math.max(game.getCurrentRound().getTotalBet() - winAmount, 0)
+                            , game.getCurrentRound().getTotalBet(), RouletteGame.idCurrentGame);
+                }
+                game.updateBalance(winAmount);
+                table.updateChipsAvailable(game.getChipsAvailable());
+                table.setBalanceLabel(game.getBalance()+"");
+                table.setTotalBetLabel("0");
+                table.clearGrid();
+                game.createNewRound();
+                if(game.getBalance() == 0) {
+                    JOptionPane.showMessageDialog(null,"GAME OVER");
+                    router.navigate("home");
+                }
+                table.repaint();
+                run = false;
+                table.getGoHome().setEnabled(true);
+            }catch (Exception ignored){}
+        });
+        r.start();
     }
 }

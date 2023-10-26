@@ -5,6 +5,7 @@ import logic.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.sql.SQLOutput;
 import java.util.*;
 
@@ -98,6 +99,12 @@ public class TableView extends JPanel {
                 " 1°", FirstColumnSet.class));
     }
 
+    public void addActionListener(ActionListener action) {
+        spinButton.addActionListener(action);
+        clearGridButton.addActionListener(action);
+        goHome.addActionListener(action);
+    }
+
     public JButton getSpinButton() {
         return spinButton;
     }
@@ -164,7 +171,6 @@ public class TableView extends JPanel {
         for(BettingGridBoxView b : boxes) b.paint((Graphics2D) g);
         for(BetBox b : betBoxes) b.paint((Graphics2D) g);
         for(ChipView c : chipsInBoxes) c.paint((Graphics2D) g);
-        //if(currentChip != null) currentChip.paint((Graphics2D) g);
         g.setColor(new Color(66, 66, 66));
         g.fillRect(0, 463, 1200, 100);
         for (ChipView c : chipsAvailable) {
@@ -221,7 +227,6 @@ public class TableView extends JPanel {
         }
         return ans != null ? ans : new BetTypeStruct(TypeBet.UNIQUE);
     }
-
 
     public Bet toBet(int x, int y) {
         Bet ans = null;
