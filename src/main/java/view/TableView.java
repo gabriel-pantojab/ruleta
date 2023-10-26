@@ -44,10 +44,12 @@ public class TableView extends JPanel {
         roulette = new RouletteView();
 
         spinButton = new JButton("SPIN");
+        spinButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         spinButton.setBounds(400, 400, 70, 30);
         spinButton.setEnabled(false);
 
         clearGridButton = new JButton("Clear");
+        clearGridButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         clearGridButton.setBounds(500, 400, 70, 30);
         clearGridButton.setEnabled(false);
 
@@ -62,6 +64,7 @@ public class TableView extends JPanel {
         totalBetLabel.setForeground(Color.WHITE);
 
         goHome = new JButton("Home");
+        goHome.setCursor(new Cursor(Cursor.HAND_CURSOR));
         goHome.setBounds(1100, 30, 70, 30);
 
         add(roulette);

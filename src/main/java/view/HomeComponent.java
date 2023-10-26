@@ -8,6 +8,8 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class HomeComponent extends JPanel {
     private JButton game;
@@ -24,6 +26,9 @@ public class HomeComponent extends JPanel {
         setLayout(null);
         router = Router.getInstance();
         game = new JButton("Play");
+        game.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        game.setFont(new Font("arial", Font.BOLD, 17));
+        game.setBounds(387, 430, 70, 40);
         game.addActionListener(e -> {
             String balance = JOptionPane.showInputDialog("Balance");
             try{
@@ -37,12 +42,18 @@ public class HomeComponent extends JPanel {
                         "Invalid Amount");
             }
         });
+
         record = new JButton("See History");
+        record.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        record.setBounds(487, 430, 130, 40);
+        record.setFont(new Font("arial", Font.BOLD, 17));
+        record.setEnabled(false);
         record.addActionListener(e -> {
             router.navigate("history");
         });
 
         auth = new JButton("SignIn");
+        auth.setCursor(new Cursor(Cursor.HAND_CURSOR));
         auth.addActionListener(e -> {
             if(RouletteGame.user.getNickname() == null) {
                 showRegistrationDialog();
@@ -55,6 +66,7 @@ public class HomeComponent extends JPanel {
         auth.setBounds(1080, 60, 80, 30);
 
         signUp = new JButton("SignUp");
+        signUp.setCursor(new Cursor(Cursor.HAND_CURSOR));
         signUp.setBounds(1080, 25, 80, 30);
         signUp.addActionListener(e->{
             showSignUpDialog();
@@ -64,12 +76,6 @@ public class HomeComponent extends JPanel {
         nickName.setForeground(Color.WHITE);
         nickName.setFont(new Font("arial", Font.BOLD, 15));
         nickName.setBounds(980, 25, 130, 30);
-
-        game.setFont(new Font("arial", Font.BOLD, 17));
-        game.setBounds(387, 430, 70, 40);
-        record.setBounds(487, 430, 130, 40);
-        record.setFont(new Font("arial", Font.BOLD, 17));
-        record.setEnabled(false);
 
         update();
     }
@@ -104,41 +110,25 @@ public class HomeComponent extends JPanel {
     }
 
     public void showRegistrationDialog() {
-        JTextField usernameField = new JTextField(10);
-        JPasswordField passwordField = new JPasswordField(10);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 2, 15, 5));
-        panel.add(new JLabel("Username:"));
-        panel.add(usernameField);
-        panel.add(new JLabel("Password:"));
-        panel.add(passwordField);
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "User " +
-                        "Registration",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (result == JOptionPane.OK_OPTION) {
+        BiConsumer<String, String> run = (nickN, pass) -> {
             try{
-                //guardar en db
-                String nickN = usernameField.getText().trim();
-                String pass = passwordField.getText().trim();
                 User newUser = new User(nickN, pass);
                 userService.insert(newUser);
                 RouletteGame.user.setNickname(nickN);
                 RouletteGame.user.setPassword(pass);
                 int id = userService.selectID(nickN, pass);
                 RouletteGame.user.setId(id);
-                JOptionPane.showMessageDialog(null, "Welcome " + usernameField.getText());
+                JOptionPane.showMessageDialog(null, "Welcome " + nickN);
                 update();
             }catch (Exception e) {
                 JOptionPane.showMessageDialog(null,
                         "User already exist 🫣" + e.getMessage());
             }
-        }
+        };
+        genericDialog(run, "User Registration");
     }
 
-    public void showSignUpDialog () {
+    public void genericDialog(BiConsumer<String, String> run, String title) {
         JTextField usernameField = new JTextField(10);
         JPasswordField passwordField = new JPasswordField(10);
 
@@ -149,26 +139,33 @@ public class HomeComponent extends JPanel {
         panel.add(new JLabel("Password:"));
         panel.add(passwordField);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "SignUp",
+        int result = JOptionPane.showConfirmDialog(null, panel, title,
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
+            String nickN = usernameField.getText().trim();
+            String pass = passwordField.getText().trim();
+            run.accept(nickN, pass);
+        }
+    }
+
+    public void showSignUpDialog () {
+        BiConsumer<String, String> run = (nickN, pass) -> {
             try{
-                String nickN = usernameField.getText().trim();
-                String pass = passwordField.getText().trim();
                 int id = userService.selectID(nickN, pass);
                 RouletteGame.user.setId(id);
                 RouletteGame.user.setNickname(nickN);
                 RouletteGame.user.setPassword(pass);
 
-                JOptionPane.showMessageDialog(null, "Welcome " + usernameField.getText());
+                JOptionPane.showMessageDialog(null, "Welcome " + nickN);
                 update();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Nickname or password " + "incorrect");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }
-        }
+        };
+        genericDialog(run, "SignUp");
     }
 
     public void logout() {
