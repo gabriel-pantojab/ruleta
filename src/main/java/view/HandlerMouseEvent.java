@@ -110,9 +110,11 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
                     long winAmount = game.getWinAmount(pocket);
                     JOptionPane.showMessageDialog(null,
                             "Win Amount: " + winAmount);
-                    roundService.insert(winAmount,
-                            Math.max(game.getCurrentRound().getTotalBet() - winAmount, 0)
-                            , game.getCurrentRound().getTotalBet(), RouletteGame.idCurrentGame);
+                    if(RouletteGame.user.getNickname() != null) {
+                        roundService.insert(winAmount,
+                                Math.max(game.getCurrentRound().getTotalBet() - winAmount, 0)
+                                , game.getCurrentRound().getTotalBet(), RouletteGame.idCurrentGame);
+                    }
                     game.updateBalance(winAmount);
                     table.updateChipsAvailable(game.getChipsAvailable());
                     table.setBalanceLabel(game.getBalance()+"");
