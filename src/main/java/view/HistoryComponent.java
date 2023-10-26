@@ -48,12 +48,14 @@ public class HistoryComponent extends JPanel {
             gamesPanel.add(Box.createVerticalStrut(10));
         }
 
+
         header.setOpaque(false);
         header.setLayout(null);
         header.add(title);
         header.add(home);
         header.setPreferredSize(new Dimension(1200, 40));
         header.setMaximumSize(new Dimension(1200, 40));
+        header.setMinimumSize(new Dimension(1200, 40));
 
         add(Box.createVerticalStrut(20));
         add(header);
