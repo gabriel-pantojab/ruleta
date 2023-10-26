@@ -39,7 +39,9 @@ public class HandlerMouseEvent extends MouseAdapter implements ActionListener {
         if(run) return;
         int x = e.getX();
         int y = e.getY();
-        Bet bet = table.toBet(x, y);
+        Bet bet = null;
+        if(game.getBalance() > 0) bet = table.toBet(x, y);
+        else return;
         if(bet != null) {
             boolean success = game.toBetInRound(bet);
             if(success) {
